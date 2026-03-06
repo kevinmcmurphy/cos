@@ -1,0 +1,9 @@
+{
+  "name": "cos",
+  "version": "0.1.0",
+  "description": "Chief of Staff morning sweep — scans calendar, email, and Notion to deliver a prioritized daily brief.",
+  "author": {
+    "name": "Kevin McMurphy"
+  },
+  "repository": "https://github.com/kevinmcmurphy/cos"
+}
