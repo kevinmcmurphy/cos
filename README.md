@@ -50,10 +50,8 @@ and optionally connects your Notion databases. Saves config to `~/.claude/skills
 
 ## Configuration
 
-After setup, your config is saved as human-readable markdown — edit it anytime
-to add email domains, change Notion databases, or update your rules.
-- **Cowork:** Config lives inside the plugin directory
-- **Claude Code:** Config lives at `~/.claude/skills/cos/config.md`
+After setup, your config lives at `~/.cos/config.md` — human-readable markdown.
+Edit it anytime to add email domains, change Notion databases, or update your rules.
 
 ## Safety Rules (Defaults)
 

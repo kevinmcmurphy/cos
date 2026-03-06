@@ -9,7 +9,7 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 ## Before You Start
 
-Read `~/.claude/skills/cos/config.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then follow the instructions in `~/.claude/skills/cos/setup.md` and stop — don't proceed with the sweep until setup is complete.
+Read `~/.cos/config.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then follow the instructions in `~/.claude/skills/cos/setup.md` and stop — don't proceed with the sweep until setup is complete.
 
 Load these values from the config:
 - `timezone` from `## Identity`

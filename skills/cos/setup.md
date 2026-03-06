@@ -1,6 +1,6 @@
 ---
 name: cos:setup
-description: First-run onboarding for the COS Morning Sweep. Collects timezone, role, email domains, and optional Notion databases through a conversational flow. Writes config to ~/.claude/skills/cos/config.md.
+description: First-run onboarding for the COS Morning Sweep. Collects timezone, role, email domains, and optional Notion databases through a conversational flow. Writes config to ~/.cos/config.md.
 ---
 
 # COS Morning Sweep - Setup
@@ -9,8 +9,8 @@ You are walking the user through first-time setup for their Chief of Staff morni
 
 ## Before You Start
 
-1. **Check for existing config.** Read `~/.claude/skills/cos/config.md`.
-   - If it exists, tell the user: "You already have a COS config at `~/.claude/skills/cos/config.md`. Want me to re-run setup from scratch, or would you rather edit the file directly?"
+1. **Check for existing config.** Read `~/.cos/config.md`.
+   - If it exists, tell the user: "You already have a COS config at `~/.cos/config.md`. Want me to re-run setup from scratch, or would you rather edit the file directly?"
    - If the user wants to re-run, continue below. If they want to edit, open the file and help them.
 
 2. **Check MCP connections.**
@@ -118,7 +118,7 @@ If the user adds rules, store them in `## Custom Rules`. If they modify defaults
 
 ## Write the Config File
 
-After collecting all answers, generate the config file at `~/.claude/skills/cos/config.md` using this exact format:
+After collecting all answers, generate the config file at `~/.cos/config.md` using this exact format:
 
 ```markdown
 # COS Configuration
@@ -159,11 +159,11 @@ data_source: [database ID or collection URL if enabled]
 - [any user-added rules, or "(none)"]
 ```
 
-Create the directory if it doesn't exist: `mkdir -p ~/.claude/skills/cos`
+Create the directory if it doesn't exist: `mkdir -p ~/.cos`
 
 After writing the file, tell the user:
 
-> Config saved to `~/.claude/skills/cos/config.md`. You can edit this file anytime.
+> Config saved to `~/.cos/config.md`. You can edit this file anytime.
 >
 > You're all set. Start your morning sweep by asking me to run your morning sweep, or just say "morning sweep".
 

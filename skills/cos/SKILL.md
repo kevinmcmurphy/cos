@@ -1,5 +1,5 @@
 ---
-name: cos:morning-sweep
+name: morning-sweep
 description: >
   Run your Chief of Staff morning sweep. Scans calendar, email, and optionally
   Notion — then classifies everything and presents a prioritized brief.
@@ -14,7 +14,7 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 ## Before You Start
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/cos/references/config.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then follow the instructions in `${CLAUDE_PLUGIN_ROOT}/skills/cos/references/setup.md` and stop — don't proceed with the sweep until setup is complete.
+Read `~/.cos/config.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then follow the instructions in `${CLAUDE_PLUGIN_ROOT}/skills/cos/references/setup.md` and stop — don't proceed with the sweep until setup is complete.
 
 Load these values from the config:
 - `timezone` from `## Identity`

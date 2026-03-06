@@ -13,7 +13,7 @@ Walk the user through first-time setup for their Chief of Staff morning sweep. C
 
 ## Before You Start
 
-1. **Check for existing config.** Read `${CLAUDE_PLUGIN_ROOT}/skills/cos/references/config.md`.
+1. **Check for existing config.** Read `~/.cos/config.md`.
    - If it exists, tell the user: "You already have a COS config. Want me to re-run setup from scratch, or would you rather edit the file directly?"
    - If the user wants to re-run, continue below. If they want to edit, open the file and help them.
 
@@ -122,7 +122,9 @@ If the user adds rules, store them in `## Custom Rules`. If they modify defaults
 
 ## Write the Config File
 
-After collecting all answers, generate the config file at `${CLAUDE_PLUGIN_ROOT}/skills/cos/references/config.md` using this exact format:
+Create the directory if it doesn't exist: `mkdir -p ~/.cos`
+
+After collecting all answers, generate the config file at `~/.cos/config.md` using this exact format:
 
 ```markdown
 # COS Configuration
