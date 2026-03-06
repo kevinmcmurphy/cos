@@ -59,7 +59,7 @@ change Notion databases, or update your rules.
 
 ## Inspiration
 
-The idea of an AI Chief of Staff came from [Jim Prosser](https://jimprosser.com/)'s post
+The idea of an AI Chief of Staff came from [Jim Prosser's thread](https://x.com/jimprosser/status/2029699731539255640)
 on building a personal COS — the concept that a solo operator doesn't need to hire a
 chief of staff when an AI can fill the role: gathering context, classifying priorities,
 and handling the routine so you can focus on the work that actually needs your brain.
