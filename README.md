@@ -57,6 +57,13 @@ change Notion databases, or update your rules.
 - Flags relationship-sensitive items as RED
 - When uncertain, preps (YELLOW) rather than dispatches (GREEN)
 
+## Inspiration
+
+The idea of an AI Chief of Staff came from [Jim Prosser](https://jimprosser.com/)'s post
+on building a personal COS — the concept that a solo operator doesn't need to hire a
+chief of staff when an AI can fill the role: gathering context, classifying priorities,
+and handling the routine so you can focus on the work that actually needs your brain.
+
 ## License
 
 MIT
