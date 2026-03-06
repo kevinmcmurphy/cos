@@ -23,7 +23,11 @@ what can be prepped, and what can wait.
 
 ## Install
 
-1. Download or clone this repo
+**Cowork (recommended):**
+Add this repo as a plugin in Claude Cowork. First run walks you through setup.
+
+**Claude Code:**
+1. Clone this repo
 2. Copy the `skills/cos/` folder to `~/.claude/skills/`
 3. Start a conversation and ask for your morning sweep
 4. First run walks you through setup (~5 min)
@@ -46,9 +50,10 @@ and optionally connects your Notion databases. Saves config to `~/.claude/skills
 
 ## Configuration
 
-After setup, your config lives at `~/.claude/skills/cos/config.md`.
-It's human-readable markdown — edit it anytime to add email domains,
-change Notion databases, or update your rules.
+After setup, your config is saved as human-readable markdown — edit it anytime
+to add email domains, change Notion databases, or update your rules.
+- **Cowork:** Config lives inside the plugin directory
+- **Claude Code:** Config lives at `~/.claude/skills/cos/config.md`
 
 ## Safety Rules (Defaults)
 
