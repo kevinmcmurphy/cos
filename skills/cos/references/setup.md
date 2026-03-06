@@ -172,7 +172,7 @@ After writing the file, tell the user:
 ## Behavioral Rules
 
 - **ONE question at a time.** Never batch questions together.
-- **Present sensible defaults** wherever possible.
+- **Present sensible defaults** wherever possible. The user should be able to just confirm for most steps.
 - **Graceful degradation.** If Notion MCP is not connected, skip all Notion steps: "I don't see Notion connected. No worries — the morning sweep works great with just Calendar and Gmail. You can add Notion later by running setup again."
 - **Target time:** Under 5 minutes for Gmail+Calendar only, under 10 minutes with all Notion modules.
-- **Be conversational, not robotic.** This is onboarding, not a form.
+- **Be conversational, not robotic.** This is onboarding, not a form. This is onboarding, not a form.
