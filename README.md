@@ -13,31 +13,37 @@ what can be prepped, and what can wait.
 - Classifies everything: RED (yours) / YELLOW (prep) / GREEN (handle) / GRAY (not today)
 - Presents a scannable morning brief with capacity check
 - Executes on your command — drafts emails, preps materials, updates docs
+- Saves the full daily brief to a Notion database for access from any device
 
 ## Requirements
 
-- Claude with Cowork (or Claude Code)
+- Claude Code or claude.ai
 - Google Calendar connected via MCP
 - Gmail connected via MCP
-- (Optional) Notion connected via MCP
+- Notion connected via MCP (for daily briefs and optional project tracking)
 
 ## Install
 
-**Cowork (recommended):**
-Add this repo as a plugin in Claude Cowork. First run walks you through setup.
-
 **Claude Code:**
 1. Clone this repo
-2. Copy the `skills/cos/` folder to `~/.claude/skills/`
+2. Copy the `skills/morning-sweep/` folder to `~/.claude/skills/cos/`
 3. Start a conversation and ask for your morning sweep
 4. First run walks you through setup (~5 min)
 
 ## How It Works
 
 **First run:** Conversational onboarding asks for your timezone, email domains to monitor,
-and optionally connects your Notion databases. Saves config to `~/.claude/skills/cos/config.md`.
+connects your Notion databases, and creates a "COS Daily Briefs" database for sweep outputs.
+Saves config to `~/.claude/skills/cos/config.md`.
 
 **Every morning:** Run your sweep. Get a prioritized brief. Say "go" to execute.
+
+**Outputs go to Notion:** The full brief, Gmail draft references, Adapture email drafts
+(as copyable code blocks), expense CSVs, and checklists are all saved to your Daily Briefs
+database. Access them from any device — phone, tablet, or desktop.
+
+**Adapture drafts:** Since there's no M365 MCP, Adapture email drafts are written as
+copyable text blocks in Notion. Copy and paste into Outlook to send.
 
 ## The Classification Framework
 
@@ -50,7 +56,7 @@ and optionally connects your Notion databases. Saves config to `~/.claude/skills
 
 ## Configuration
 
-After setup, your config lives at `~/.cos/config.md` — human-readable markdown.
+After setup, your config lives at `~/.claude/skills/cos/config.md` — human-readable markdown.
 Edit it anytime to add email domains, change Notion databases, or update your rules.
 
 ## Safety Rules (Defaults)
