@@ -105,6 +105,20 @@ If **yes**: Same search-then-URL flow.
 
 Store: `data_source` (the database ID or collection URL).
 
+### H. Daily Briefs Database
+
+> The morning sweep saves results to a Notion database so you can access them from any device. I'll create one for you now.
+
+Use the Notion MCP `notion-create-database` tool to create a new database:
+- **Title:** "COS Daily Briefs"
+- **Parent:** Ask the user where to put it, or suggest Operations Home if they have one
+- **Properties:** Date (date), Status (select: Draft/Complete/Reviewed), Red Count (number), Yellow Count (number)
+
+Store the returned database ID.
+
+If the Notion MCP is unavailable, skip this section:
+> "Without Notion connected, sweep results will only appear in this conversation. You can add Notion later by running setup again."
+
 ### G. Hard Rules
 
 Present the default safety rules:
@@ -154,6 +168,10 @@ date_fields: [comma-separated field names]
 ## Notion: Clients
 enabled: [true/false]
 data_source: [database ID or collection URL if enabled]
+
+## Notion: Daily Briefs
+enabled: [true/false]
+database_id: [id if enabled]
 
 ## Hard Rules
 - [rule 1]
