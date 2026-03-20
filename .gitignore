@@ -1,5 +1,6 @@
 # User config (contains PII — database IDs, email domains, company names)
 config.md
+me.md
 *.local.md
 
 # OS files
