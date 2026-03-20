@@ -1,2 +1,6 @@
-# Personal config contains PII (database IDs, email domains, company names)
-skills/morning-sweep/config.md
+# User config (contains PII — database IDs, email domains, company names)
+config.md
+*.local.md
+
+# OS files
+.DS_Store

@@ -1,77 +1,84 @@
-# COS Morning Sweep
+# Chief of Staff
 
-A Chief of Staff for solo operators. One command gives you a prioritized morning brief
-across your calendar, email, and projects — classified by what needs your brain,
-what can be prepped, and what can wait.
+AI Chief of Staff for solo operators.
+
+One plugin gives you a daily operating rhythm — morning sweep to prioritize and execute, evening review to close the day and plan tomorrow. Everything classified by what needs your brain and what doesn't.
 
 ## What It Does
 
-- Scans your Google Calendar (today + tomorrow)
-- Checks Gmail for messages from your key contacts (last 48 hours)
-- Optionally pulls active projects and pipeline items from Notion
-- Asks what's on your mind
-- Classifies everything: RED (yours) / YELLOW (prep) / GREEN (handle) / GRAY (not today)
-- Presents a scannable morning brief with capacity check
+Chief of Staff runs a two-part daily cycle:
+
+**Morning Sweep** scans your world and gets you moving:
+- Google Calendar (today + tomorrow)
+- Gmail (last 48 hours from key contacts)
+- Notion (active projects + pipeline)
+- Classifies everything RED / YELLOW / GREEN / GRAY
 - Executes on your command — drafts emails, preps materials, updates docs
-- Saves the full daily brief to a Notion database for access from any device
+- Saves the full daily brief to Notion
+
+**Evening Review** closes the day and sets up tomorrow:
+- Brain dump capture — get everything out of your head
+- Accountability scorecard against an 80% completion target
+- Project and system updates
+- Plans the next workday
+- Creates tomorrow's Daily Brief page so morning sweep can execute immediately
 
 ## Requirements
 
-- Claude Code or claude.ai
-- Google Calendar connected via MCP
-- Gmail connected via MCP
-- Notion connected via MCP (for daily briefs and optional project tracking)
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+- Google Calendar MCP
+- Gmail MCP
+- Notion MCP
 
 ## Install
 
-**Claude Code:**
-1. Clone this repo
-2. Copy the `skills/morning-sweep/` folder to `~/.claude/skills/cos/`
-3. Start a conversation and ask for your morning sweep
-4. First run walks you through setup (~5 min)
+Clone this repo and install as a Claude Code plugin. Marketplace listing TBD.
 
-## How It Works
+## First Run
 
-**First run:** Conversational onboarding asks for your timezone, email domains to monitor,
-connects your Notion databases, and creates a "COS Daily Briefs" database for sweep outputs.
-Saves config to `~/.claude/skills/cos/config.md`.
+Setup walks you through connecting everything:
+- Your timezone
+- Email domains to monitor
+- Notion database connections (projects, clients, tasks)
 
-**Every morning:** Run your sweep. Get a prioritized brief. Say "go" to execute.
+Takes about 5 minutes. Config saved at `~/.cos/config.md` — survives plugin updates.
 
-**Outputs go to Notion:** The full brief, Gmail draft references, Adapture email drafts
-(as copyable code blocks), expense CSVs, and checklists are all saved to your Daily Briefs
-database. Access them from any device — phone, tablet, or desktop.
+## The Daily Cycle
 
-**Adapture drafts:** Since there's no M365 MCP, Adapture email drafts are written as
-copyable text blocks in Notion. Copy and paste into Outlook to send.
+The system is designed around an evening-to-morning flow:
 
-## The Classification Framework
+1. **Evening review** closes your day. You dump what's in your head, score how the day went, and Claude plans tomorrow — creating a Daily Brief page with priorities already set.
+2. **Morning sweep** refreshes live data (new emails, calendar changes) and executes against that plan immediately. No waiting around for analysis.
 
-| Color | Meaning | Example |
-|-------|---------|---------|
-| RED | Needs your brain or presence today | Client call prep, strategic decisions, deadlines |
-| YELLOW | Claude preps it 80%, you finalize | Email drafts, meeting research, content review |
-| GREEN | Claude handles it | Routine replies, scheduling, status updates |
-| GRAY | Not today | No deadline pressure, blocked by others |
+If you skip the evening review, morning sweep falls back to full planning mode — it still works, just takes a beat longer to build context from scratch.
 
-## Configuration
+## Classification Framework
 
-After setup, your config lives at `~/.claude/skills/cos/config.md` — human-readable markdown.
-Edit it anytime to add email domains, change Notion databases, or update your rules.
+| Color | Label | What It Means | Example |
+|-------|-------|---------------|---------|
+| RED | Yours | Needs your brain or presence today | Client call prep, strategic decisions, deadlines |
+| YELLOW | Prep | Claude gets it 80% ready, you finalize | Email drafts, meeting research, content review |
+| GREEN | Handle | Claude does it | Routine replies, scheduling, status updates |
+| GRAY | Not today | Deferred with a reason | No deadline pressure, blocked by others, low priority |
 
-## Safety Rules (Defaults)
+When uncertain, Chief of Staff biases toward YELLOW. Better to over-prepare than to let something slip.
+
+## Config
+
+Lives at `~/.cos/config.md`. Human-readable markdown. Edit it anytime — add email domains, change Notion databases, adjust your rules. The file is yours and survives plugin updates.
+
+## Safety Rules
 
 - Never sends email — drafts only, you review everything
 - Never deletes or archives anything
+- Never makes pricing or scope decisions
 - Flags relationship-sensitive items as RED
-- When uncertain, preps (YELLOW) rather than dispatches (GREEN)
+- When uncertain, preps (YELLOW) not dispatches (GREEN)
+- Never schedules work on Sunday (Sabbath protection)
 
 ## Inspiration
 
-The idea of an AI Chief of Staff came from [Jim Prosser's thread](https://x.com/jimprosser/status/2029699731539255640)
-on building a personal COS — the concept that a solo operator doesn't need to hire a
-chief of staff when an AI can fill the role: gathering context, classifying priorities,
-and handling the routine so you can focus on the work that actually needs your brain.
+Built on the idea from [Jim Prosser's thread](https://x.com/jimprosser/status/2029699731539255640) — a solo operator doesn't need to hire a chief of staff when an AI can fill the role. Gather context, classify priorities, handle the routine, so you can focus on the work that actually needs your brain.
 
 ## License
 
