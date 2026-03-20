@@ -1,10 +1,10 @@
-# COS Shared Core
+# COS Agent Logic
 
-Shared logic referenced by both morning-sweep.md and evening-review.md. Do NOT duplicate this content — reference this file instead.
+Agent operating logic referenced by both morning-sweep and evening-review skills.
 
 ## Config Loading
 
-Read `${CLAUDE_PLUGIN_DATA}/me.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then invoke the `/cos:setup` skill and stop.
+Read `${CLAUDE_PLUGIN_DATA}/me.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then run `/cos:setup` and stop.
 
 Load these values from me.md:
 - `timezone` from `## Identity`
@@ -31,6 +31,8 @@ Do NOT batch writes. Do NOT wait until the end. Write after each action.
 
 ## Data Gathering
 
+**Run all three subsections (Calendar, Email, Notion) in parallel.** They are independent of each other.
+
 ### Calendar — Today + Tomorrow
 
 Use the `gws` CLI to pull calendar events:
@@ -38,10 +40,14 @@ Use the `gws` CLI to pull calendar events:
 ```bash
 # Today's events
 gws calendar +agenda --today --timezone [timezone from me.md]
+```
 
+```bash
 # Tomorrow's events
 gws calendar +agenda --tomorrow --timezone [timezone from me.md]
 ```
+
+Both calls are independent — run them in parallel.
 
 Parse the structured JSON output. For each event:
 - Note time, title, location, attendees
@@ -57,13 +63,7 @@ This returns the next meeting's agenda, attendees, and linked docs.
 
 ### Email Scan — Last 48 Hours
 
-Use the `gws` CLI to scan email. Start with a triage overview:
-
-```bash
-gws gmail +triage --max 50 --query 'newer_than:2d'
-```
-
-Then filter for key contacts by searching domains from the `## Email Monitoring` section of me.md:
+Use the `gws` CLI to scan email from monitored domains listed in the `## Email Monitoring` section of me.md:
 
 ```bash
 # For each monitored domain or combine with OR
@@ -104,26 +104,14 @@ Read the `## Email Accounts` section from `${CLAUDE_PLUGIN_DATA}/me.md` to deter
 
 For emails that should be sent from a connected account (per `## Email Accounts` in me.md):
 
-**Creating drafts:** Use `gws gmail +send` with `--dry-run` to preview, then create a Gmail draft:
-
+Create a Gmail draft (does NOT send) using the Gmail drafts API:
 ```bash
-# Create a draft (does NOT send)
-gws gmail users drafts create --json '{
-  "message": {
-    "raw": "[base64-encoded RFC 2822 message]"
-  }
-}'
+gws gmail users drafts create --json '{"message": {"raw": "[base64-encoded RFC 2822 message]"}}'
 ```
 
-Or for simple drafts, compose the message and use the drafts API directly.
+**NEVER use `gws gmail +send` without explicit user approval.** Core rule: draft only, user reviews all outbound.
 
-**NEVER use `gws gmail +send` without `--dry-run`.** The core rule is: draft only, user reviews all outbound.
-
-**Replying to threads:** Use `gws gmail +reply` with `--dry-run` to preview threaded replies:
-
-```bash
-gws gmail +reply --message-id MESSAGE_ID --body "Reply text" --dry-run
-```
+**Replying to threads:** Create a threaded reply draft using the Gmail drafts API with the appropriate `threadId` and `In-Reply-To` header.
 
 After each draft, log in the Daily Brief "Drafts: [Account Label]" section:
 `**To:** [recipient] — **Subject:** [subject] — Draft created in Gmail`
@@ -140,24 +128,6 @@ For emails that should be sent from an unconnected account:
   Body of the email here.
   ```
 - Tell the user which account to send from and how (per the send instructions in me.md): "[Account label] draft for [recipient] saved to your Daily Brief in Notion. [Send instructions from me.md]"
-
-## Workflow Helpers
-
-The `gws` CLI provides workflow commands that combine data from multiple services:
-
-### Standup Report
-Generates a combined view of today's meetings and open tasks:
-```bash
-gws workflow +standup-report
-```
-Use this during the morning sweep to quickly assess the day.
-
-### Meeting Prep
-Prepares context for the next upcoming meeting:
-```bash
-gws workflow +meeting-prep
-```
-Returns agenda, attendees, and linked docs. Use this when flagging meetings that need prep.
 
 ## Task Creation
 
@@ -176,9 +146,10 @@ These rules are architectural safety constraints. They are NOT user-modifiable.
 1. NEVER send an email — draft only, user reviews all outbound
 2. NEVER delete or archive anything in any connected system
 3. NEVER handle relationship-sensitive communications without flagging as RED
-4. When uncertain about classification: default to YELLOW (prep), not GREEN (dispatch)
-5. Execute everything possible up to the human-judgment boundary — stop only where outside judgment or action is required
-6. Completion target is 80% — surface shortfalls gently, track patterns across days
+4. Execute everything possible up to the human-judgment boundary — stop only where outside judgment or action is required
+5. Completion target is 80% — surface shortfalls gently, track patterns across days
+
+Classification tiebreaker rules (e.g., defaulting to YELLOW when uncertain) are defined in classification.md.
 
 Additionally, read and apply all rules from the `## My Rules` and `## Custom Rules` sections of `${CLAUDE_PLUGIN_DATA}/me.md`. These are user-defined and take effect alongside core rules.
 

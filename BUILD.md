@@ -8,7 +8,7 @@ From the plugin root directory:
 
 ```bash
 cd /path/to/chief-of-staff
-zip -r cos.plugin . -x "*.DS_Store" -x ".git/*" -x ".gitignore" -x "BUILD.md" -x "REFACTOR-PROMPT.md" -x "cos.plugin"
+zip -r cos.plugin . -x "*.DS_Store" -x ".git/*" -x ".gitignore" -x "BUILD.md" -x "REFACTOR-PROMPT.md" -x "cos.plugin" -x "me.md" -x "*.local.md"
 ```
 
 ## What Gets Excluded
@@ -21,6 +21,8 @@ zip -r cos.plugin . -x "*.DS_Store" -x ".git/*" -x ".gitignore" -x "BUILD.md" -x
 | `BUILD.md` | This file — build instructions only |
 | `cos.plugin` | Avoid nesting a previous build inside the new one |
 | `REFACTOR-PROMPT.md` | Internal refactoring notes, not part of the plugin |
+| `me.md` | User's personal config file (PII) |
+| `*.local.md` | Local-only files not for distribution |
 
 ## What Gets Included
 

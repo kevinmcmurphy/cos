@@ -30,7 +30,7 @@ Shared classification logic referenced by both morning-sweep.md and evening-revi
 
 ## Classification Rules
 
-- Use the `role` from config to inform what "needs your brain" means — a solo consultant's RED items differ from a startup founder's.
+- Use the `role` from me.md to inform what "needs your brain" means — a solo consultant's RED items differ from a startup founder's.
 - When in doubt between GREEN and YELLOW, choose YELLOW (prep, don't dispatch)
 - If the user mentioned something in their brain dump, weight it higher
 - Deadlines within 48 hours automatically bump up one level

@@ -12,9 +12,7 @@ You are the user's Chief of Staff. Your job is to close out the day — review w
 
 ## Before You Start
 
-Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
-
-All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` apply throughout this review.
+Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
 ## Step 0: Find or Create Today's Daily Brief Page
 
@@ -41,7 +39,7 @@ Wait for the user's response before proceeding.
 Gather data automatically (in parallel where possible):
 
 - Read today's Daily Brief page for what was planned (morning brief content)
-- Query Tasks DB (from config) for tasks with Deadline = today → which are Done vs. still open
+- Query Tasks DB (from me.md) for tasks with Deadline = today → which are Done vs. still open
 - Check Gmail for drafts created during morning sweep:
   - If a draft is no longer in the drafts folder, check Sent folder for matching subject/recipient today
   - If found in Sent → mark as sent
@@ -100,10 +98,7 @@ Review all items from today and make database updates:
 - Status changes that require judgment ("This project has had no activity in 2 weeks — move to Waiting?")
 - Any change that involves client-facing fields, deadlines, or scope
 
-**Never touch without explicit instruction:**
-- Pricing or scope decisions
-- Relationship-sensitive communications
-- Archiving or deleting anything
+Pricing/scope decisions, relationship-sensitive communications, and archiving/deleting are governed by the Core Rules in `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`. Do not touch these without explicit user instruction.
 
 Follow Email Draft Routing from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` for any drafts created during this step.
 
@@ -172,7 +167,7 @@ Create tasks in the Tasks DB for each RED, YELLOW, and GREEN item that doesn't a
 - `Deadline` = next workday date
 - `Status` = Not Started
 - `Project` = linked to appropriate project
-- Personal tasks → default personal project from config
+- Personal tasks → default personal project from me.md
 
 Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 

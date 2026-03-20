@@ -39,7 +39,7 @@ Check for existing configuration to determine the setup path:
 
 2. **`${CLAUDE_PLUGIN_DATA}/me.md` does NOT exist but `${CLAUDE_PLUGIN_DATA}/config.md` exists** → migration from previous plugin version.
    - Ask: "Found existing COS config. Migrate to the new format?"
-   - If yes: read config.md, convert to me.md format (add Email Accounts section, rename Hard Rules to My Rules), write as me.md. Say "Config migrated successfully." Then check for missing sections — if `## Notion: Tasks` or `## Email Accounts` are absent, jump to those steps (Steps 5, 6) to fill the gaps.
+   - If yes: read config.md, convert to me.md format (add Email Accounts section, rename Hard Rules to My Rules), write as me.md. Say "Config migrated successfully." Then check for missing sections — if `## Notion: Tasks` or `## Email Accounts` are absent, jump to Steps 4b and 5c to fill the gaps.
    - If no: proceed to Step 3.
 
 3. **`${CLAUDE_PLUGIN_DATA}/me.md` does NOT exist but `~/.claude/skills/cos/config.md` exists** → migration from legacy standalone install.

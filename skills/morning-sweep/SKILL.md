@@ -12,13 +12,11 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 ## Before You Start
 
-Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
-
-All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` apply throughout this sweep.
+Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
 ## Step 0: Find or Create Daily Brief Page — Detect Path
 
-If `## Notion: Daily Briefs` is enabled in config:
+If `## Notion: Daily Briefs` is enabled in me.md:
 
 1. **Search by Date property** (not title). Query the Daily Briefs database for a page with Date = today. This finds both old-format ("Morning Sweep — YYYY-MM-DD") and new-format ("YYYY-MM-DD") pages.
 
@@ -56,9 +54,7 @@ Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Arch
 
 **Contract note:** The evening review (Step 4 and Step 5) is responsible for ensuring all carryover-worthy items become tasks in the Tasks DB. This means the pre-planned path can safely rely on Tasks DB alone for carryover — no need to parse previous Daily Brief pages.
 
-Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`:
-- Tasks overdue by 3+ days → escalate classification
-- Label as `[overdue from YYYY-MM-DD]`
+Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
 
 ### Step P3: Refresh Classifications
 
@@ -126,13 +122,6 @@ Only include PIPELINE if the Pipeline module is enabled. Only include project-re
 No waiting for "go." Start working through GREEN items right away. This is safe because the user already reviewed and approved the plan during last night's evening review. The adjustment ask at the end serves as the safety valve.
 
 Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
-
-For each action:
-- Email drafts: follow routing rules from agent-logic.md
-- Notion updates: update databases, log in "Outputs" section
-- Task updates: mark tasks in progress or done as appropriate
-
-**All outputs follow the Notion Write-Back Rule** — update after each action, not at the end.
 
 ### Step P6: Prep YELLOW Items
 
@@ -211,7 +200,7 @@ If the user adjusts: accept changes, update the Notion page, re-present, wait fo
 
 Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
-Work through all GREEN items. All outputs follow the Notion Write-Back Rule.
+Work through all GREEN items.
 
 ### Step C7: Prep YELLOW Items
 
