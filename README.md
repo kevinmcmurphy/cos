@@ -41,7 +41,7 @@ Setup walks you through connecting everything:
 - Email domains to monitor
 - Notion database connections (projects, clients, tasks)
 
-Takes about 5 minutes. Config saved at `~/.cos/config.md` — survives plugin updates.
+Takes about 5 minutes. Config saved at `~/.claude/plugins/data/cos/config.md` — survives plugin updates.
 
 ## The Daily Cycle
 
@@ -65,7 +65,7 @@ When uncertain, Chief of Staff biases toward YELLOW. Better to over-prepare than
 
 ## Config
 
-Lives at `~/.cos/config.md`. Human-readable markdown. Edit it anytime — add email domains, change Notion databases, adjust your rules. The file is yours and survives plugin updates.
+Lives at `~/.claude/plugins/data/cos/config.md`. Human-readable markdown. Edit it anytime — add email domains, change Notion databases, adjust your rules. The file is yours and survives plugin updates.
 
 ## Safety Rules
 

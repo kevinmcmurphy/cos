@@ -12,9 +12,9 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 ## Before You Start
 
-Follow the Config Loading instructions in `${CLAUDE_SKILL_DIR}/references/shared-core.md`.
+Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
 
-All Hard Rules from `${CLAUDE_SKILL_DIR}/references/shared-core.md` apply throughout this sweep.
+All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` apply throughout this sweep.
 
 ## Step 0: Find or Create Daily Brief Page — Detect Path
 
@@ -29,9 +29,9 @@ If `## Notion: Daily Briefs` is enabled in config:
 
 3. Save the page ID — you'll update this page throughout the sweep.
 
-See `${CLAUDE_SKILL_DIR}/references/notion-schema.md` for page structure and writing instructions.
+See `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md` for page structure and writing instructions.
 
-The Notion Write-Back Rule from `${CLAUDE_SKILL_DIR}/references/shared-core.md` applies to all subsequent steps.
+The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` applies to all subsequent steps.
 
 If the Daily Briefs module is not enabled, skip page management. Outputs will only appear in the conversation. Follow the Cold Start Path.
 
@@ -43,7 +43,7 @@ Use this path when the evening review already planned today. The plan exists on 
 
 ### Step P1: Gather Fresh Data (parallel)
 
-Use the Data Gathering steps from `${CLAUDE_SKILL_DIR}/references/shared-core.md` to pull:
+Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` to pull:
 - Calendar today + tomorrow
 - Email scan (last 48 hours)
 - Notion projects + pipeline
@@ -56,7 +56,7 @@ Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Arch
 
 **Contract note:** The evening review (Step 4 and Step 5) is responsible for ensuring all carryover-worthy items become tasks in the Tasks DB. This means the pre-planned path can safely rely on Tasks DB alone for carryover — no need to parse previous Daily Brief pages.
 
-Apply carryover aging rules from `${CLAUDE_SKILL_DIR}/references/classification.md`:
+Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`:
 - Tasks overdue by 3+ days → escalate classification
 - Label as `[overdue from YYYY-MM-DD]`
 
@@ -68,7 +68,7 @@ Start from last night's plan as baseline. Layer in fresh data:
 - Notion project/pipeline updates
 - Overdue tasks from Step P2
 
-Reclassify items using the framework in `${CLAUDE_SKILL_DIR}/references/classification.md` if the new data warrants it. Note what changed.
+Reclassify items using the framework in `${CLAUDE_PLUGIN_ROOT}/references/classification.md` if the new data warrants it. Note what changed.
 
 ### Step P4: Present Brief
 
@@ -125,7 +125,7 @@ Only include PIPELINE if the Pipeline module is enabled. Only include project-re
 
 No waiting for "go." Start working through GREEN items right away. This is safe because the user already reviewed and approved the plan during last night's evening review. The adjustment ask at the end serves as the safety valve.
 
-Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_SKILL_DIR}/references/shared-core.md`.
+Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
 
 For each action:
 - Email drafts: follow routing rules from shared-core.md
@@ -168,11 +168,11 @@ Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Arch
 
 Also query the Daily Briefs database for the most recent page where Status = "Complete" or "Reviewed" and Date < today. If one exists, fetch its content and cross-reference with the Tasks DB to identify items that were surfaced but never acted on.
 
-Apply carryover aging rules from `${CLAUDE_SKILL_DIR}/references/classification.md`.
+Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
 
 ### Step C1: Gather Context (parallel)
 
-Use the Data Gathering steps from `${CLAUDE_SKILL_DIR}/references/shared-core.md` to pull calendar, email, and Notion data.
+Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` to pull calendar, email, and Notion data.
 
 ### Step C2: Ask for Brain Dump
 
@@ -190,7 +190,7 @@ Wait for the user's response before proceeding.
 
 ### Step C3: Classify Everything
 
-Use the Classification Framework from `${CLAUDE_SKILL_DIR}/references/classification.md`.
+Use the Classification Framework from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
 
 Take ALL inputs — calendar, email, projects, pipeline, carryover, and the user's brain dump — and classify each item.
 
@@ -209,7 +209,7 @@ If the user adjusts: accept changes, update the Notion page, re-present, wait fo
 
 ### Step C6: Execute GREEN Items
 
-Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_SKILL_DIR}/references/shared-core.md`.
+Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
 
 Work through all GREEN items. All outputs follow the Notion Write-Back Rule.
 

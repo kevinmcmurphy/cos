@@ -2,26 +2,26 @@
 name: cos-setup
 description: >
   Use when the user wants to configure the Chief of Staff plugin, set up COS,
-  or when config is missing at ~/.cos/config.md. Walks through timezone, email
+  or when config is missing at ${CLAUDE_PLUGIN_DATA}/config.md. Walks through timezone, email
   domains, Notion databases, and creates config.
 ---
 
 # Chief of Staff — Setup
 
-Walk the user through configuring the Chief of Staff plugin. This creates the config file at `~/.cos/config.md`.
+Walk the user through configuring the Chief of Staff plugin. This creates the config file at `${CLAUDE_PLUGIN_DATA}/config.md`.
 
 ## Step 0: Detect Config State
 
 Before starting setup, check for existing configuration:
 
-1. **If `~/.cos/config.md` exists** → Scenario C (existing config)
-   - Ask: "Config found at ~/.cos/config.md. Use existing config or re-run setup?"
+1. **If `${CLAUDE_PLUGIN_DATA}/config.md` exists** → Scenario C (existing config)
+   - Ask: "Config found at ${CLAUDE_PLUGIN_DATA}/config.md. Use existing config or re-run setup?"
    - If use existing: validate all required sections are present (Identity, Email Monitoring, Notion modules, Hard Rules). Report any missing sections and offer to fill gaps.
-   - If re-run: copy existing to `~/.cos/config.md.bak` as backup, then proceed to Step 1.
+   - If re-run: copy existing to `${CLAUDE_PLUGIN_DATA}/config.md.bak` as backup, then proceed to Step 1.
 
-2. **If `~/.cos/config.md` does NOT exist but `~/.claude/skills/cos/config.md` exists** → Scenario B (migration)
-   - Ask: "Found existing COS config at ~/.claude/skills/cos/config.md. Migrate to ~/.cos/config.md?"
-   - If yes: create `~/.cos/` directory if needed, copy file, verify copy, say "Config migrated successfully."
+2. **If `${CLAUDE_PLUGIN_DATA}/config.md` does NOT exist but `~/.claude/skills/cos/config.md` exists** → Scenario B (migration from legacy install)
+   - Ask: "Found existing COS config at ~/.claude/skills/cos/config.md. Migrate to the plugin's data directory?"
+   - If yes: copy file to `${CLAUDE_PLUGIN_DATA}/config.md`, verify copy, say "Config migrated successfully."
    - Check if config has `## Notion: Tasks` section. If missing, run just the Tasks setup step (Step F below).
    - If no: proceed to Step 1 (full setup).
 
@@ -30,9 +30,9 @@ Before starting setup, check for existing configuration:
 
 ## Step 1: Full Setup Flow
 
-Create the `~/.cos/` directory if it doesn't exist:
+The plugin data directory at `${CLAUDE_PLUGIN_DATA}` is created automatically when first referenced. Ensure it exists:
 ```bash
-mkdir -p ~/.cos
+mkdir -p "${CLAUDE_PLUGIN_DATA}"
 ```
 
 ### Step A: Timezone
@@ -127,7 +127,7 @@ Ask: "Want to modify any of these, or add your own rules?"
 
 ### Step J: Write Config
 
-Write the config to `~/.cos/config.md` in this format:
+Write the config to `${CLAUDE_PLUGIN_DATA}/config.md` in this format:
 
 ```
 # COS Configuration
@@ -176,7 +176,7 @@ database_id: [id]
 - [any user-added rules]
 ```
 
-Tell the user: "Config saved to ~/.cos/config.md. You can edit it anytime — it's human-readable markdown. This file survives plugin updates."
+Tell the user: "Config saved to ${CLAUDE_PLUGIN_DATA}/config.md. You can edit it anytime — it's human-readable markdown. This file survives plugin updates."
 
 ### Graceful Degradation
 

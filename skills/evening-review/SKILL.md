@@ -12,19 +12,19 @@ You are the user's Chief of Staff. Your job is to close out the day — review w
 
 ## Before You Start
 
-Follow the Config Loading instructions in `${CLAUDE_SKILL_DIR}/references/shared-core.md`.
+Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
 
-All Hard Rules from `${CLAUDE_SKILL_DIR}/references/shared-core.md` apply throughout this review.
+All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` apply throughout this review.
 
 ## Step 0: Find or Create Today's Daily Brief Page
 
-Query the Daily Briefs database for a page with Date = today (search by Date property, not title — see `${CLAUDE_SKILL_DIR}/references/notion-schema.md`).
+Query the Daily Briefs database for a page with Date = today (search by Date property, not title — see `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`).
 
 - **If found with status "Reviewed":** An evening review was already done tonight. Ask: "I see an evening review was already done tonight. Update it or start fresh?" If "update," continue with the existing page. If "start fresh," proceed as normal but overwrite the evening review sections.
 - **If found with any other status:** Use that page ID. It should have status `Complete` (morning sweep finished) or possibly `Draft`/`Active` (morning sweep started but didn't finish).
 - **If not found:** Create a new page titled "YYYY-MM-DD" (today's date) with Date = today and Status = "Draft". This handles the case where no morning sweep ran today.
 
-The Notion Write-Back Rule from `${CLAUDE_SKILL_DIR}/references/shared-core.md` applies to all subsequent steps.
+The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` applies to all subsequent steps.
 
 ## Step 1: Brain Dump
 
@@ -105,9 +105,9 @@ Review all items from today and make database updates:
 - Relationship-sensitive communications
 - Archiving or deleting anything
 
-Follow Email Draft Routing from `${CLAUDE_SKILL_DIR}/references/shared-core.md` for any drafts created during this step.
+Follow Email Draft Routing from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` for any drafts created during this step.
 
-Follow Task Creation patterns from `${CLAUDE_SKILL_DIR}/references/shared-core.md` for any tasks created during this step.
+Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` for any tasks created during this step.
 
 ## Step 5: Plan Next Workday
 
@@ -120,7 +120,7 @@ Follow Task Creation patterns from `${CLAUDE_SKILL_DIR}/references/shared-core.m
 
 ### Gather Data for Next Workday
 
-Use the Data Gathering steps from `${CLAUDE_SKILL_DIR}/references/shared-core.md`, but pull calendar for the **next workday** (not today/tomorrow as in the morning sweep).
+Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`, but pull calendar for the **next workday** (not today/tomorrow as in the morning sweep).
 
 ### Triage Incomplete Items
 
@@ -131,7 +131,7 @@ Wait for user response on all items before classifying.
 
 ### Classify
 
-Use the Classification Framework from `${CLAUDE_SKILL_DIR}/references/classification.md`.
+Use the Classification Framework from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
 
 Inputs for classification:
 - Carried-over items from today (user-approved moves from triage above)
@@ -174,13 +174,13 @@ Create tasks in the Tasks DB for each RED, YELLOW, and GREEN item that doesn't a
 - `Project` = linked to appropriate project
 - Personal tasks → default personal project from config
 
-Follow Task Creation patterns from `${CLAUDE_SKILL_DIR}/references/shared-core.md`.
+Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
 
 ## Step 6: Create Next Workday's Daily Brief Page
 
 - Search Daily Briefs DB for an existing page with Date = next workday. If found (e.g., Friday already created Monday's page), update it instead of creating a duplicate.
 - If not found, create a new page titled "YYYY-MM-DD" (next workday's date)
-- Write the plan from Step 5 to the "Plan" section (see page body structure in `${CLAUDE_SKILL_DIR}/references/notion-schema.md`)
+- Write the plan from Step 5 to the "Plan" section (see page body structure in `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`)
 - Set page status to "Planned"
 - Set `Planned Items` property to total RED + YELLOW + GREEN count
 - Set `Red Count` and `Yellow Count` properties

@@ -4,7 +4,7 @@ Shared logic referenced by both morning-sweep.md and evening-review.md. Do NOT d
 
 ## Config Loading
 
-Read `~/.cos/config.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then invoke the `/cos:setup` skill and stop.
+Read `${CLAUDE_PLUGIN_DATA}/config.md`. If it doesn't exist, tell the user: "No config found. Let me walk you through setup." Then invoke the `/cos:setup` skill and stop.
 
 Load these values from the config:
 - `timezone` from `## Identity`
