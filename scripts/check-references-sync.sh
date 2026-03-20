@@ -3,7 +3,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 FAIL=0
 for file in "$REPO_ROOT/_references/"*; do
