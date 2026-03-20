@@ -31,17 +31,22 @@ Chief of Staff runs a two-part daily cycle:
 
 ## Install
 
-**From the marketplace:**
+In Claude Code, run these commands:
+
 ```
 /plugin marketplace add kevinmcmurphy/cos
-/plugin install cos@kevinmcmurphy-cos
+/plugin install cos@chief-of-staff
+/reload-plugins
 ```
 
-**Or test locally:**
+This adds the marketplace, installs the plugin, and loads it. Commands will be available as `/cos:morning-sweep`, `/cos:evening-review`, and `/cos:setup`.
+
+**For development/testing:**
 ```bash
 git clone https://github.com/kevinmcmurphy/cos.git
 claude --plugin-dir ./cos
 ```
+This loads the plugin for a single session without installing it permanently.
 
 ## First Run
 
