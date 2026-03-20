@@ -26,8 +26,7 @@ Chief of Staff runs a two-part daily cycle:
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
-- Google Calendar MCP
-- Gmail MCP
+- [Google Workspace CLI](https://github.com/googleworkspace/cli) (`npm install -g @googleworkspace/cli`)
 - Notion MCP
 
 ## Install
@@ -39,6 +38,7 @@ Clone this repo and install as a Claude Code plugin. Marketplace listing TBD.
 Setup walks you through connecting everything:
 - Your timezone
 - Email accounts and domains to monitor
+- Google Workspace CLI authentication (`gws auth setup`)
 - Notion database connections (projects, clients, tasks)
 
 Takes about 5 minutes.

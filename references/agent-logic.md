@@ -33,24 +33,54 @@ Do NOT batch writes. Do NOT wait until the end. Write after each action.
 
 ### Calendar — Today + Tomorrow
 
-Use the Google Calendar MCP to pull events for today and tomorrow.
-- Use the timezone from me.md
-- Note meetings that need prep (client calls, BD conversations)
-- Flag back-to-back meetings with no buffer
+Use the `gws` CLI to pull calendar events:
+
+```bash
+# Today's events
+gws calendar +agenda --today --timezone [timezone from me.md]
+
+# Tomorrow's events
+gws calendar +agenda --tomorrow --timezone [timezone from me.md]
+```
+
+Parse the structured JSON output. For each event:
+- Note time, title, location, attendees
+- Flag meetings that need prep (client calls, BD conversations)
+- Flag back-to-back meetings with no buffer (less than 15 min gap)
 - Flag events with physical locations (user may need drive time)
+
+For meetings needing prep, use:
+```bash
+gws workflow +meeting-prep
+```
+This returns the next meeting's agenda, attendees, and linked docs.
 
 ### Email Scan — Last 48 Hours
 
-Use the Gmail MCP to search for recent emails from the domains listed in the `## Email Monitoring` section of me.md. For each domain, run a search with `newer_than:2d`:
-- `from:[domain]` for each configured domain
-- Combine domains from the same organization into one search where it makes sense (e.g., `from:domain1.com OR from:domain2.com`)
+Use the `gws` CLI to scan email. Start with a triage overview:
+
+```bash
+gws gmail +triage --max 50 --query 'newer_than:2d'
+```
+
+Then filter for key contacts by searching domains from the `## Email Monitoring` section of me.md:
+
+```bash
+# For each monitored domain or combine with OR
+gws gmail +triage --query 'from:domain1.com OR from:domain2.com newer_than:2d'
+```
 
 For each email found:
 - Note the sender, subject, and date
 - Determine if it looks like it needs a response or follow-up from the user
-- Flag anything that appears unanswered (no reply from the user in the thread)
+- Flag anything that appears unanswered
 
-If `## Notion: Clients` is enabled in me.md, also use the Notion MCP to pull client records from the configured `data_source` and extract any email domains. Search Gmail for those domains too.
+To read a specific message for more context:
+```bash
+gws gmail +read --id MESSAGE_ID --headers
+```
+
+If `## Notion: Clients` is enabled in me.md, also use the Notion MCP to pull client records from the configured `data_source` and extract any email domains. Search for those domains too.
 
 ### Notion — Active Projects + Pipeline
 
@@ -68,14 +98,35 @@ If `## Notion: Clients` is enabled in me.md, also use the Notion MCP to pull cli
 
 ## Email Draft Routing
 
-Read the `## Email Accounts` section from `${CLAUDE_PLUGIN_DATA}/me.md` to determine which accounts are connected (have MCP access) and which are unconnected.
+Read the `## Email Accounts` section from `${CLAUDE_PLUGIN_DATA}/me.md` to determine which accounts are connected and which are unconnected.
 
 ### Connected Email Accounts
 
-For emails that should be sent from a connected account (e.g., an account with MCP access):
-- Create drafts via the appropriate MCP tool — **never send**
-- After each draft, log in the Daily Brief "Drafts: [Account Label]" section:
-  `**To:** [recipient] — **Subject:** [subject] — Draft created in [tool name]`
+For emails that should be sent from a connected account (per `## Email Accounts` in me.md):
+
+**Creating drafts:** Use `gws gmail +send` with `--dry-run` to preview, then create a Gmail draft:
+
+```bash
+# Create a draft (does NOT send)
+gws gmail users drafts create --json '{
+  "message": {
+    "raw": "[base64-encoded RFC 2822 message]"
+  }
+}'
+```
+
+Or for simple drafts, compose the message and use the drafts API directly.
+
+**NEVER use `gws gmail +send` without `--dry-run`.** The core rule is: draft only, user reviews all outbound.
+
+**Replying to threads:** Use `gws gmail +reply` with `--dry-run` to preview threaded replies:
+
+```bash
+gws gmail +reply --message-id MESSAGE_ID --body "Reply text" --dry-run
+```
+
+After each draft, log in the Daily Brief "Drafts: [Account Label]" section:
+`**To:** [recipient] — **Subject:** [subject] — Draft created in Gmail`
 
 ### Unconnected Email Accounts
 
@@ -89,6 +140,24 @@ For emails that should be sent from an unconnected account:
   Body of the email here.
   ```
 - Tell the user which account to send from and how (per the send instructions in me.md): "[Account label] draft for [recipient] saved to your Daily Brief in Notion. [Send instructions from me.md]"
+
+## Workflow Helpers
+
+The `gws` CLI provides workflow commands that combine data from multiple services:
+
+### Standup Report
+Generates a combined view of today's meetings and open tasks:
+```bash
+gws workflow +standup-report
+```
+Use this during the morning sweep to quickly assess the day.
+
+### Meeting Prep
+Prepares context for the next upcoming meeting:
+```bash
+gws workflow +meeting-prep
+```
+Returns agenda, attendees, and linked docs. Use this when flagging meetings that need prep.
 
 ## Task Creation
 

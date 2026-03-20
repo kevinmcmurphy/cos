@@ -34,6 +34,28 @@ Before starting setup, check for existing configuration:
 4. **If none of the above exist** → Scenario A (fresh install)
    - Proceed to Step 1.
 
+## Step 0.5: Check Prerequisites
+
+Verify the `gws` CLI is installed and authenticated:
+
+```bash
+gws calendar +agenda --today
+```
+
+If this fails with "command not found":
+> "The Chief of Staff plugin uses the Google Workspace CLI for email and calendar. Let's install it:"
+> ```bash
+> npm install -g @googleworkspace/cli
+> gws auth setup
+> ```
+> "Follow the prompts to connect your Google account. This takes about 2 minutes."
+
+If it fails with an auth error:
+> "The Google Workspace CLI needs to be authenticated. Run:"
+> ```bash
+> gws auth login
+> ```
+
 ## Step 1: Full Setup Flow
 
 The plugin data directory at `${CLAUDE_PLUGIN_DATA}` is created automatically when first referenced.
@@ -202,5 +224,4 @@ Tell the user: "Config saved. You can edit it anytime — it's human-readable ma
 ### Graceful Degradation
 
 - If Notion MCP is not available: skip all Notion steps, note which features will be limited
-- If no email MCP is available: still set up email monitoring domains (for scanning), note that all drafts will be written as copyable blocks
-- If Google Calendar MCP is not available: warn that calendar features won't work
+- If `gws` CLI is not installed: warn that email and calendar features require it. Direct user to install: `npm install -g @googleworkspace/cli` then `gws auth setup`
