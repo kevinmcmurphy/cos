@@ -12,9 +12,9 @@ You are the user's Chief of Staff. Your job is to close out the day — review w
 
 ## Before You Start
 
-Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
+Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
-All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` apply throughout this review.
+All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` apply throughout this review.
 
 ## Step 0: Find or Create Today's Daily Brief Page
 
@@ -24,7 +24,7 @@ Query the Daily Briefs database for a page with Date = today (search by Date pro
 - **If found with any other status:** Use that page ID. It should have status `Complete` (morning sweep finished) or possibly `Draft`/`Active` (morning sweep started but didn't finish).
 - **If not found:** Create a new page titled "YYYY-MM-DD" (today's date) with Date = today and Status = "Draft". This handles the case where no morning sweep ran today.
 
-The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` applies to all subsequent steps.
+The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
 
 ## Step 1: Brain Dump
 
@@ -105,9 +105,9 @@ Review all items from today and make database updates:
 - Relationship-sensitive communications
 - Archiving or deleting anything
 
-Follow Email Draft Routing from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` for any drafts created during this step.
+Follow Email Draft Routing from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` for any drafts created during this step.
 
-Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` for any tasks created during this step.
+Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` for any tasks created during this step.
 
 ## Step 5: Plan Next Workday
 
@@ -120,7 +120,7 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core
 
 ### Gather Data for Next Workday
 
-Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`, but pull calendar for the **next workday** (not today/tomorrow as in the morning sweep).
+Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`, but pull calendar for the **next workday** (not today/tomorrow as in the morning sweep).
 
 ### Triage Incomplete Items
 
@@ -174,7 +174,7 @@ Create tasks in the Tasks DB for each RED, YELLOW, and GREEN item that doesn't a
 - `Project` = linked to appropriate project
 - Personal tasks → default personal project from config
 
-Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
+Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
 ## Step 6: Create Next Workday's Daily Brief Page
 

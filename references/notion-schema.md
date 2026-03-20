@@ -54,24 +54,29 @@ Use Notion paragraph blocks. Use bold for section headers within the brief (CALE
 If a Plan section exists, the morning brief notes changes since the evening plan:
 `Changes since last night: [summary of new items/changes]`
 
-### 3. Drafts: Gmail
+### 3. Drafts: [Connected Account]
 
-Bulleted list of Gmail drafts created during the sweep.
-Format each as: "**To:** [recipient] — **Subject:** [subject] — Draft created in Gmail"
+For each connected email account that had drafts created, add a section with the account label as the heading.
+Bulleted list of drafts created during the sweep.
+Format each as: "**To:** [recipient] — **Subject:** [subject] — Draft created in [tool name]"
 
-### 4. Drafts: Adapture
+Repeat this section for each connected account that had drafts (e.g., "Drafts: Gmail", "Drafts: Outlook").
 
-For each Adapture draft, create a heading_3 block with the subject line,
-then a code block containing:
+### 4. Drafts: [Unconnected Account]
+
+For each unconnected email account that needs drafts, add a section with the account label as the heading.
+For each draft, create a heading_3 block with the subject line, then a code block containing:
 
 ```
-To: recipient@adapture.com
+To: recipient@example.com
 Subject: The subject line
 
 Body of the email here.
 ```
 
-The user will copy this block and paste it into Outlook to send.
+Include the send instructions from me.md so the user knows how to send (e.g., "Copy and paste into Outlook").
+
+Repeat this section for each unconnected account that had drafts.
 
 ### 5. Outputs
 
@@ -95,7 +100,7 @@ Contents:
 ## Writing to the Database
 
 Use the Notion MCP `notion-create-pages` tool:
-1. Set parent to the Daily Briefs database ID from config
+1. Set parent to the Daily Briefs database ID from me.md
 2. Set the Name (title) property to "YYYY-MM-DD" format
 3. Set Date to the appropriate date
 4. Set Status to the appropriate starting status (Planned, Draft)

@@ -12,9 +12,9 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 ## Before You Start
 
-Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
+Follow the Config Loading instructions in `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
-All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` apply throughout this sweep.
+All Hard Rules from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` apply throughout this sweep.
 
 ## Step 0: Find or Create Daily Brief Page — Detect Path
 
@@ -31,7 +31,7 @@ If `## Notion: Daily Briefs` is enabled in config:
 
 See `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md` for page structure and writing instructions.
 
-The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` applies to all subsequent steps.
+The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
 
 If the Daily Briefs module is not enabled, skip page management. Outputs will only appear in the conversation. Follow the Cold Start Path.
 
@@ -43,7 +43,7 @@ Use this path when the evening review already planned today. The plan exists on 
 
 ### Step P1: Gather Fresh Data (parallel)
 
-Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` to pull:
+Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` to pull:
 - Calendar today + tomorrow
 - Email scan (last 48 hours)
 - Notion projects + pipeline
@@ -125,10 +125,10 @@ Only include PIPELINE if the Pipeline module is enabled. Only include project-re
 
 No waiting for "go." Start working through GREEN items right away. This is safe because the user already reviewed and approved the plan during last night's evening review. The adjustment ask at the end serves as the safety valve.
 
-Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
+Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
 For each action:
-- Email drafts: follow routing rules from shared-core.md
+- Email drafts: follow routing rules from agent-logic.md
 - Notion updates: update databases, log in "Outputs" section
 - Task updates: mark tasks in progress or done as appropriate
 
@@ -172,7 +172,7 @@ Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classificatio
 
 ### Step C1: Gather Context (parallel)
 
-Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md` to pull calendar, email, and Notion data.
+Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` to pull calendar, email, and Notion data.
 
 ### Step C2: Ask for Brain Dump
 
@@ -209,7 +209,7 @@ If the user adjusts: accept changes, update the Notion page, re-present, wait fo
 
 ### Step C6: Execute GREEN Items
 
-Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/shared-core.md`.
+Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
 Work through all GREEN items. All outputs follow the Notion Write-Back Rule.
 

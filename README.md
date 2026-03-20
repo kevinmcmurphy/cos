@@ -38,10 +38,10 @@ Clone this repo and install as a Claude Code plugin. Marketplace listing TBD.
 
 Setup walks you through connecting everything:
 - Your timezone
-- Email domains to monitor
+- Email accounts and domains to monitor
 - Notion database connections (projects, clients, tasks)
 
-Takes about 5 minutes. Config saved at `~/.claude/plugins/data/cos/config.md` — survives plugin updates.
+Takes about 5 minutes.
 
 ## The Daily Cycle
 
@@ -65,16 +65,19 @@ When uncertain, Chief of Staff biases toward YELLOW. Better to over-prepare than
 
 ## Config
 
-Lives at `~/.claude/plugins/data/cos/config.md`. Human-readable markdown. Edit it anytime — add email domains, change Notion databases, adjust your rules. The file is yours and survives plugin updates.
+The plugin ships with `agent-logic.md` (how the agent works) and creates `me.md` during setup (who you are, your accounts, your rules). `me.md` lives in the plugin's data directory and survives updates.
+
+`me.md` is human-readable markdown. Edit it anytime — add email domains, change Notion databases, adjust your rules.
 
 ## Safety Rules
 
+Core rules (always enforced):
 - Never sends email — drafts only, you review everything
 - Never deletes or archives anything
-- Never makes pricing or scope decisions
 - Flags relationship-sensitive items as RED
 - When uncertain, preps (YELLOW) not dispatches (GREEN)
-- Never schedules work on Sunday (Sabbath protection)
+
+You can add your own rules during setup (e.g., blocked days, pricing boundaries, escalation preferences). These are stored in `me.md`.
 
 ## Inspiration
 
