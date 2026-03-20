@@ -31,7 +31,17 @@ Chief of Staff runs a two-part daily cycle:
 
 ## Install
 
-Clone this repo and install as a Claude Code plugin. Marketplace listing TBD.
+**From the marketplace:**
+```
+/plugin marketplace add kevinmcmurphy/cos
+/plugin install cos@kevinmcmurphy-cos
+```
+
+**Or test locally:**
+```bash
+git clone https://github.com/kevinmcmurphy/cos.git
+claude --plugin-dir ./cos
+```
 
 ## First Run
 
