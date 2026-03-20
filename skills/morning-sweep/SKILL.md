@@ -31,7 +31,7 @@ See `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md` for page structure and w
 
 The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
 
-If the Daily Briefs module is not enabled, skip page management. Outputs will only appear in the conversation. Follow the Cold Start Path.
+If the Daily Briefs module is not enabled, skip all page management, write-backs, and page status updates. Outputs will only appear in the conversation. Follow the Cold Start Path but skip any steps that reference the Daily Brief page.
 
 ---
 
@@ -153,9 +153,11 @@ Use this path when no evening review was done. This is the fallback — full pla
 
 ### Step C0.5: Review Carryover
 
-Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Archive, Dropped). These are overdue tasks that need attention.
+**If `## Notion: Tasks` is enabled in me.md:** Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Archive, Dropped). These are overdue tasks that need attention.
 
-Also query the Daily Briefs database for the most recent page where Status = "Complete" or "Reviewed" and Date < today. If one exists, fetch its content and cross-reference with the Tasks DB to identify items that were surfaced but never acted on.
+**If `## Notion: Daily Briefs` is enabled in me.md:** Also query the Daily Briefs database for the most recent page where Status = "Complete" or "Reviewed" and Date < today. If one exists, fetch its content and cross-reference with the Tasks DB to identify items that were surfaced but never acted on.
+
+If neither is enabled, skip this step.
 
 Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
 
@@ -187,7 +189,7 @@ Take ALL inputs — calendar, email, projects, pipeline, carryover, and the user
 
 Output in the standard brief format (same as Step P4 above, but without the "updated from evening plan" header and changes-since-last-night line).
 
-Set page status to "Active". Write the brief to the page. Set Red Count, Yellow Count, and Planned Items properties.
+If Daily Briefs is enabled: set page status to "Active", write the brief to the page, set Red Count, Yellow Count, and Planned Items properties.
 
 ### Step C5: Wait for Response
 
@@ -209,7 +211,5 @@ Same as Step P6.
 ### Step C8: Finalize
 
 After all GREEN and YELLOW items are processed:
-1. Verify the Daily Brief page has all content
-2. Set `Completed Items` property
-3. Set Status to "Complete"
-4. Tell the user: "Daily brief complete in Notion."
+1. If Daily Briefs is enabled: verify the page has all content, set `Completed Items` property, set Status to "Complete"
+2. Tell the user: "Morning sweep complete." (Add "Daily brief saved in Notion." if Daily Briefs is enabled.)

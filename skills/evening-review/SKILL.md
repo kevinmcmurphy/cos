@@ -16,6 +16,8 @@ Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logi
 
 ## Step 0: Find or Create Today's Daily Brief Page
 
+**If `## Notion: Daily Briefs` is enabled in me.md:**
+
 Query the Daily Briefs database for a page with Date = today (search by Date property, not title — see `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`).
 
 - **If found with status "Reviewed":** An evening review was already done tonight. Ask: "I see an evening review was already done tonight. Update it or start fresh?" If "update," continue with the existing page. If "start fresh," proceed as normal but overwrite the evening review sections.
@@ -23,6 +25,8 @@ Query the Daily Briefs database for a page with Date = today (search by Date pro
 - **If not found:** Create a new page titled "YYYY-MM-DD" (today's date) with Date = today and Status = "Draft". This handles the case where no morning sweep ran today.
 
 The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
+
+**If Daily Briefs is not enabled:** Skip page management. All outputs appear in the conversation only. Skip write-back steps throughout.
 
 ## Step 1: Brain Dump
 
@@ -38,8 +42,8 @@ Wait for the user's response before proceeding.
 
 Gather data automatically (in parallel where possible):
 
-- Read today's Daily Brief page for what was planned (morning brief content)
-- Query Tasks DB (from me.md) for tasks with Deadline = today → which are Done vs. still open
+- If Daily Briefs enabled: read today's Daily Brief page for what was planned (morning brief content)
+- If Tasks enabled: query Tasks DB (from me.md) for tasks with Deadline = today → which are Done vs. still open
 - Check Gmail for drafts created during morning sweep:
   - If a draft is no longer in the drafts folder, check Sent folder for matching subject/recipient today
   - If found in Sent → mark as sent
@@ -109,9 +113,9 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 ### Determine the Target Day
 
 - **Monday-Thursday evening:** Plan for tomorrow.
-- **Friday evening:** Ask "Plan personal tasks for Saturday?" If yes, create Saturday's Daily Brief page with personal tasks only. Then plan work items for Monday and create Monday's Daily Brief page. Two pages may be created.
-- **Saturday evening:** Plan for Monday. Skip Sunday entirely. Only surface Sunday personal items if user explicitly requests.
-- **Sunday:** Protected as Sabbath. Never auto-schedule work tasks to Sunday. Personal tasks only if user explicitly places them there.
+- **Friday evening:** Plan for Monday.
+- **Saturday evening:** Plan for Monday.
+- **Sunday:** Protected — do not auto-schedule work tasks. If the user runs an evening review on Sunday, plan for Monday.
 
 ### Gather Data for Next Workday
 
@@ -163,7 +167,7 @@ GRAY - NOT TODAY ([count])
 
 ### Create Tasks
 
-Create tasks in the Tasks DB for each RED, YELLOW, and GREEN item that doesn't already have a task:
+**If `## Notion: Tasks` is enabled in me.md:** Create tasks in the Tasks DB for each RED, YELLOW, and GREEN item that doesn't already have a task. If Tasks is not enabled, skip this substep.
 - `Deadline` = next workday date
 - `Status` = Not Started
 - `Project` = linked to appropriate project
@@ -173,7 +177,9 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 
 ## Step 6: Create Next Workday's Daily Brief Page
 
-- Search Daily Briefs DB for an existing page with Date = next workday. If found (e.g., Friday already created Monday's page), update it instead of creating a duplicate.
+**If `## Notion: Daily Briefs` is enabled in me.md:**
+
+- Search Daily Briefs DB for an existing page with Date = next workday. If found, update it instead of creating a duplicate.
 - If not found, create a new page titled "YYYY-MM-DD" (next workday's date)
 - Write the plan from Step 5 to the "Plan" section (see page body structure in `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`)
 - Set page status to "Planned"
@@ -181,11 +187,20 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 - Set `Red Count` and `Yellow Count` properties
 - Set Date to next workday's date
 
+**If Daily Briefs is not enabled:** Skip this step. The plan was already presented in conversation.
+
 ## Step 7: Update Today's Page
 
+**If Daily Briefs is enabled:**
 - Append all evening review content to today's page (if not already written via incremental write-backs): accountability scorecard, brain dump, pattern notes, list of system updates made
 - Set today's page status to "Reviewed"
 
+If not enabled, skip.
+
 ## Step 8: Finalize
 
+If Daily Briefs is enabled:
 > "[Next workday]'s plan is in Notion — you can preview it anytime. Morning sweep will refresh and execute. Good night."
+
+If not enabled:
+> "Tomorrow's plan is ready. Morning sweep will gather fresh data and execute. Good night."
