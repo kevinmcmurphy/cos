@@ -125,7 +125,7 @@ After presenting the brief, proceed directly to executing GREEN and YELLOW items
 
 ## Source Linking Rule
 
-Every item in the Daily Brief — RED, YELLOW, GREEN, and GRAY — must include a clickable link to the source material (email message, Notion page, support ticket, etc.). The user should be able to verify and act on any item directly from the Daily Brief without searching for it.
+Every item in the Daily Brief that originated from a source system — email, Notion page, calendar event, support ticket, etc. — must include a clickable link to that source. Items created from the user's brain dump or free-form input won't have a backing URL; that's fine, no link needed. The goal: the user should be able to verify and act on any externally-sourced item directly from the Daily Brief without searching for it.
 
 ## Core Rules — Non-Negotiable
 

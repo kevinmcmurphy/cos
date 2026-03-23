@@ -138,12 +138,13 @@ Write all prep work to the Daily Brief page as you go.
 After all GREEN and YELLOW items are processed:
 1. Verify the Daily Brief page has all content from incremental writes
 2. Set `Completed Items` property
-3. Set Status to "Complete"
-4. Present a summary of what was done
+3. Present a summary of what was done
 
 > "Morning sweep complete. Here's what I did: [summary of actions taken]. Anything to adjust?"
 
 If the user adjusts: make the changes, update the Notion page.
+
+Once adjustments are done (or the user confirms no changes): set Status to "Complete".
 
 ---
 
@@ -204,8 +205,10 @@ Same as Step P6.
 ### Step C7: Finalize and Ask for Adjustments
 
 After all GREEN and YELLOW items are processed:
-1. If Daily Briefs is enabled: verify the page has all content, set `Completed Items` property, set Status to "Complete"
+1. If Daily Briefs is enabled: verify the page has all content, set `Completed Items` property
 2. Present a summary of what was done
 3. Ask: "Morning sweep complete. Here's what I did: [summary]. Anything to adjust?" (Add "Daily brief saved in Notion." if Daily Briefs is enabled.)
 
 If the user adjusts: make the changes, update the Notion page.
+
+Once adjustments are done (or the user confirms no changes): if Daily Briefs is enabled, set Status to "Complete".
