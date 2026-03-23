@@ -1,5 +1,5 @@
 ---
-name: cos-setup
+name: setup
 description: >
   Use when the user wants to configure the Chief of Staff plugin, set up COS,
   or when config is missing at ${CLAUDE_PLUGIN_DATA}/me.md. Walks through timezone,
