@@ -54,7 +54,9 @@ Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Arch
 
 **Contract note:** The evening review (Step 4 and Step 5) is responsible for ensuring all carryover-worthy items become tasks in the Tasks DB. This means the pre-planned path can safely rely on Tasks DB alone for carryover — no need to parse previous Daily Brief pages.
 
-Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
+Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`:
+- Tasks overdue by 3+ days → escalate classification
+- Label as `[overdue from YYYY-MM-DD]`
 
 ### Step P3: Refresh Classifications
 
@@ -123,6 +125,13 @@ No waiting for "go." Start working through GREEN items right away. This is safe 
 
 Follow Email Draft Routing and Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
+For each action:
+- Email drafts: follow routing rules from agent-logic.md
+- Notion updates: update databases, log in "Outputs" section
+- Task updates: mark tasks in progress or done as appropriate
+
+**All outputs follow the Notion Write-Back Rule** — update after each action, not at the end.
+
 ### Step P6: Prep YELLOW Items
 
 For each YELLOW item, do the prep work:
@@ -160,7 +169,9 @@ Use this path when no evening review was done. This is the fallback — full pla
 
 If neither is enabled, skip this step.
 
-Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`.
+Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`:
+- Tasks overdue by 3+ days → escalate classification
+- Label as `[overdue from YYYY-MM-DD]`
 
 ### Step C1: Gather Context (parallel)
 
