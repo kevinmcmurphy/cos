@@ -139,6 +139,14 @@ For emails that should be sent from an unconnected account:
 - Set `Status` to "Not Started"
 - Log each task in the "Outputs" section of the Daily Brief
 
+## Immediate Execution Rule
+
+After presenting the brief, proceed directly to executing GREEN and YELLOW items. Do not wait for explicit confirmation. The brief presentation is the checkpoint — ask for adjustments after execution, not before. The only required wait point is the brain dump (Cold Start path), because user input feeds classification.
+
+## Source Linking Rule
+
+Every item in the Daily Brief — RED, YELLOW, GREEN, and GRAY — must include a clickable link to the source material (email message, Notion page, support ticket, etc.). The user should be able to verify and act on any item directly from the Daily Brief without searching for it.
+
 ## Core Rules — Non-Negotiable
 
 These rules are architectural safety constraints. They are NOT user-modifiable.
