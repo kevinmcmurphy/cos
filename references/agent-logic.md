@@ -35,50 +35,33 @@ Do NOT batch writes. Do NOT wait until the end. Write after each action.
 
 ### Calendar — Today + Tomorrow
 
-Use the `gws` CLI to pull calendar events:
+Pull calendar events using the Google Calendar MCP tools:
 
-```bash
-# Today's events
-gws calendar +agenda --today --timezone [timezone from me.md]
-```
-
-```bash
-# Tomorrow's events
-gws calendar +agenda --tomorrow --timezone [timezone from me.md]
-```
+- **Today's events:** Call `gcal_list_events` with `start` = start of today and `end` = end of today (in the timezone from me.md)
+- **Tomorrow's events:** Call `gcal_list_events` with `start` = start of tomorrow and `end` = end of tomorrow
 
 Both calls are independent — run them in parallel.
 
-Parse the structured JSON output. For each event:
+For each event:
 - Note time, title, location, attendees
 - Flag meetings that need prep (client calls, BD conversations)
 - Flag back-to-back meetings with no buffer (less than 15 min gap)
 - Flag events with physical locations (user may need drive time)
 
-For meetings needing prep, use:
-```bash
-gws workflow +meeting-prep
-```
-This returns the next meeting's agenda, attendees, and linked docs.
+For meetings needing prep, call `gcal_get_event` with the event ID to retrieve attendees, description, and other event details. Run all `gcal_get_event` calls in parallel.
 
 ### Email Scan — Last 48 Hours
 
-Use the `gws` CLI to scan email from monitored domains listed in the `## Email Monitoring` section of me.md:
+Scan email from monitored domains listed in the `## Email Monitoring` section of me.md:
 
-```bash
-# For each monitored domain or combine with OR
-gws gmail +triage --query 'from:domain1.com OR from:domain2.com newer_than:2d'
-```
+- Call `gmail_search_messages` with query `from:domain1.com OR from:domain2.com newer_than:2d` (combining all monitored domains)
 
 For each email found:
 - Note the sender, subject, and date
 - Determine if it looks like it needs a response or follow-up from the user
 - Flag anything that appears unanswered
 
-To read a specific message for more context:
-```bash
-gws gmail +read --id MESSAGE_ID --headers
-```
+To read a specific message for more context, call `gmail_read_message` with the message ID.
 
 If `## Notion: Clients` is enabled in me.md, also use the Notion MCP to pull client records from the configured `data_source` and extract any email domains. Search for those domains too.
 
@@ -104,14 +87,11 @@ Read the `## Email Accounts` section from `${CLAUDE_PLUGIN_DATA}/me.md` to deter
 
 For emails that should be sent from a connected account (per `## Email Accounts` in me.md):
 
-Create a Gmail draft (does NOT send) using the Gmail drafts API:
-```bash
-gws gmail users drafts create --json '{"message": {"raw": "[base64-encoded RFC 2822 message]"}}'
-```
+Call `gmail_create_draft` with the recipient, subject, and body. This creates a draft — it does NOT send.
 
-**NEVER use `gws gmail +send` without explicit user approval.** Core rule: draft only, user reviews all outbound.
+**NEVER send emails directly.** Core rule: draft only, user reviews all outbound.
 
-**Replying to threads:** Create a threaded reply draft using the Gmail drafts API with the appropriate `threadId` and `In-Reply-To` header.
+**Replying to threads:** Call `gmail_create_draft` with the appropriate `threadId` and `In-Reply-To` header to create a threaded reply draft.
 
 After each draft, log in the Daily Brief "Drafts: [Account Label]" section:
 `**To:** [recipient] — **Subject:** [subject] — Draft created in Gmail`
@@ -138,6 +118,14 @@ For emails that should be sent from an unconnected account:
 - Set `Deadline` to the appropriate date
 - Set `Status` to "Not Started"
 - Log each task in the "Outputs" section of the Daily Brief
+
+## Immediate Execution Rule
+
+After presenting the brief, proceed directly to executing GREEN and YELLOW items. Do not wait for explicit confirmation. The brief presentation is the checkpoint — ask for adjustments after execution, not before. The only required wait point is the brain dump (Cold Start path), because user input feeds classification.
+
+## Source Linking Rule
+
+Every item in the Daily Brief that originated from a source system — email, Notion page, calendar event, support ticket, etc. — must include a clickable link to that source. Items created from the user's brain dump or free-form input won't have a backing URL; that's fine, no link needed. The goal: the user should be able to verify and act on any externally-sourced item directly from the Daily Brief without searching for it.
 
 ## Core Rules — Non-Negotiable
 
