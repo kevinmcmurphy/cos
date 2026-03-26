@@ -124,7 +124,7 @@ For emails that should be sent from an unconnected account:
 ### Timezone Boundary for Email Queries
 
 When checking Gmail for emails sent "today" (e.g., accountability review verifying if a draft was sent), define "today" using the user's timezone from me.md:
-- Start of today = midnight in user's timezone (e.g., 00:00 ET = 05:00 UTC during EDT, 04:00 UTC during EST)
+- Start of today = midnight in user's timezone (e.g., 00:00 ET = 04:00 UTC during EDT, 05:00 UTC during EST)
 - End of today = current time in user's timezone
 
 When calling `gmail_search_messages`, the `newer_than:1d` filter uses a rolling 24-hour window from the call time, which is usually sufficient. But when the date boundary matters (e.g., accountability review at 11 PM ET — which is past midnight UTC), use explicit `after:` and `before:` epoch timestamps converted from the user's timezone boundaries.

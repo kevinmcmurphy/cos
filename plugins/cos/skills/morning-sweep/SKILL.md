@@ -202,7 +202,7 @@ Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.
 
 **Before prompting, check for a recent evening review brain dump:**
 
-If `## Notion: Daily Briefs` is enabled and `evening_review_context` was populated in Step C0.5:
+If `## Notion: Daily Briefs` is enabled and `evening_review_detected` is true (set in Step 0 / C0.5) and `evening_review_context` was populated in Step C0.5:
 1. Check if the evening review context contains a brain dump.
 2. If a brain dump exists:
    - Surface it: "I found your brain dump from last night's evening review: [summary]. Anything to add or change for this morning?"
