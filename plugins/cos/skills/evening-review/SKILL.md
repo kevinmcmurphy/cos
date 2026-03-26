@@ -167,11 +167,19 @@ GRAY - NOT TODAY ([count])
 
 ### Create Tasks
 
-**If `## Notion: Tasks` is enabled in me.md:** Create tasks in the Tasks DB for each RED, YELLOW, and GREEN item that doesn't already have a task. If Tasks is not enabled, skip this substep.
-- `Deadline` = next workday date
-- `Status` = Not Started
-- `Project` = linked to appropriate project
-- Personal tasks → default personal project from me.md
+**If `## Notion: Tasks` is enabled in me.md:** Create tasks in the Tasks DB for each RED, YELLOW, GREEN, and GRAY item that doesn't already have a task. If Tasks is not enabled, skip this substep.
+- RED/YELLOW/GREEN tasks:
+  - `Deadline` = next workday date
+  - `Status` = Not Started
+  - `Project` = linked to appropriate project
+  - Personal tasks → default personal project from me.md
+- GRAY tasks:
+  - `Deadline` = next workday date
+  - `Status` = Not Started
+  - Prefix the task title with `[GRAY]` (e.g., `[GRAY] Review vendor contract`)
+  - `Project` = linked to appropriate project
+
+When GRAY tasks are created, note in the evening review output: "Created [N] GRAY tasks in Notion. These have [GRAY] prefixes that track deferral aging — please don't remove the prefix."
 
 Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 

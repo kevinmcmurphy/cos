@@ -1,12 +1,21 @@
 {
   "name": "cos",
-  "description": "AI Chief of Staff for solo operators. Morning sweep plans your day, evening review closes it out. Scans calendar, email, and Notion — classifies everything by what needs your brain vs. what can be handled.",
-  "version": "0.3.0",
+  "description": "AI Chief of Staff for solo operators. Morning sweep plans your day, evening review closes it out. Scans calendar, email, and Notion \u2014 classifies everything by what needs your brain vs. what can be handled.",
+  "version": "0.3.1",
   "author": {
     "name": "Kevin McMurphy"
   },
   "homepage": "https://github.com/kevinmcmurphy/cos",
   "repository": "https://github.com/kevinmcmurphy/cos",
   "license": "MIT",
-  "keywords": ["chief-of-staff", "morning-sweep", "evening-review", "daily-brief", "productivity", "notion", "gmail", "calendar"]
+  "keywords": [
+    "chief-of-staff",
+    "morning-sweep",
+    "evening-review",
+    "daily-brief",
+    "productivity",
+    "notion",
+    "gmail",
+    "calendar"
+  ]
 }

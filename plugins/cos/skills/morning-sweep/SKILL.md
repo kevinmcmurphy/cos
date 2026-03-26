@@ -22,10 +22,12 @@ If `## Notion: Daily Briefs` is enabled in me.md:
 
 2. **Branch based on what you find:**
    - **Page found with Status = "Planned"** → This day was pre-planned by an evening review. Follow the **Pre-planned Path** below.
-   - **Page found with any other status** → Reuse that page. Follow the **Cold Start Path** (the page exists but wasn't set up by an evening review).
-   - **No page found** → Create a new page titled "YYYY-MM-DD" with Date = today, Status = "Draft". Follow the **Cold Start Path**.
+   - **Page found with any other status** → Reuse that page. Check the **fallback** below, then follow the **Cold Start Path**.
+   - **No page found** → Check the **fallback** below. Create a new page titled "YYYY-MM-DD" with Date = today, Status = "Draft". Follow the **Cold Start Path**.
 
-3. Save the page ID — you'll update this page throughout the sweep.
+3. **Fallback — detect partial evening review:** If no "Planned" page exists for today, query for the most recent Daily Brief page with Status = "Reviewed" and Date within the last 48 hours. If found, set an internal flag `evening_review_detected = true`. This flag signals Steps C0.5, C2, and C4.5 that an evening review ran even though the Pre-planned Path wasn't triggered. The Cold Start Path will use this flag to pull evening review context, skip/shorten the brain dump, and present material changes before executing.
+
+4. Save the page ID — you'll update this page throughout the sweep.
 
 See `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md` for page structure and writing instructions.
 
@@ -57,6 +59,12 @@ Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Arch
 Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classification.md`:
 - Tasks overdue by 3+ days → escalate classification
 - Label as `[overdue from YYYY-MM-DD]`
+
+**GRAY item aging:** Additionally, query the Tasks DB for tasks with titles starting with `[GRAY]` and Deadline <= today. For each:
+- Count consecutive days deferred: check how many previous Daily Brief pages (up to 5 most recent) listed this item as GRAY.
+- If 3+ consecutive days as GRAY with no status change on the underlying project/email: bump to YELLOW. Remove `[GRAY]` prefix from the task title. Flag prominently in the brief: "[GRAY->YELLOW] [item] — deferred [N] consecutive days, needs attention."
+- If < 3 days: keep as GRAY, carry forward.
+- If consecutive-day count cannot be determined, default to keeping the item as GRAY and flag: "Unable to determine GRAY aging for [item] — review manually."
 
 ### Step P3: Refresh Classifications
 
@@ -165,7 +173,14 @@ Use this path when no evening review was done. This is the fallback — full pla
 
 **If `## Notion: Tasks` is enabled in me.md:** Query the Tasks DB for tasks with Deadline < today and Status not in (Done, Archive, Dropped). These are overdue tasks that need attention.
 
-**If `## Notion: Daily Briefs` is enabled in me.md:** Also query the Daily Briefs database for the most recent page where Status = "Complete" or "Reviewed" and Date < today. If one exists, fetch its content and cross-reference with the Tasks DB to identify items that were surfaced but never acted on.
+**If `## Notion: Daily Briefs` is enabled in me.md:** Also query the Daily Briefs database for the most recent page where Status = "Complete" or "Reviewed" and Date < today (within the last 48 hours). If one exists:
+1. Fetch its full content — scorecard, brain dump, NOT DONE items, evening review section, and plan.
+2. Cross-reference with the Tasks DB to identify items that were surfaced but never acted on.
+3. If the page has Status = "Reviewed" (meaning an evening review ran), or if `evening_review_detected` was set in Step 0:
+   - Extract the brain dump — this feeds into the Step C2 gate (brain dump skip).
+   - Extract NOT DONE items — these should already be tasks (per evening review Step 5), but verify. If any NOT DONE item has no corresponding task, create one.
+   - Extract the evening review's classification — use as baseline context for Step C3 classification. Items the user was worried about last night should be weighted higher today.
+4. Store this data as `evening_review_context` for use in Steps C2, C3, and C4.5.
 
 If neither is enabled, skip this step.
 
@@ -173,11 +188,29 @@ Apply carryover aging rules from `${CLAUDE_PLUGIN_ROOT}/references/classificatio
 - Tasks overdue by 3+ days → escalate classification
 - Label as `[overdue from YYYY-MM-DD]`
 
+**GRAY item aging:** Additionally, query the Tasks DB for tasks with titles starting with `[GRAY]` and Deadline <= today. For each:
+- Count consecutive days deferred: check how many previous Daily Brief pages (up to 5 most recent) listed this item as GRAY.
+- If 3+ consecutive days as GRAY with no status change on the underlying project/email: bump to YELLOW. Remove `[GRAY]` prefix from the task title. Flag prominently in the brief: "[GRAY->YELLOW] [item] — deferred [N] consecutive days, needs attention."
+- If < 3 days: keep as GRAY, carry forward.
+- If consecutive-day count cannot be determined, default to keeping the item as GRAY and flag: "Unable to determine GRAY aging for [item] — review manually."
+
 ### Step C1: Gather Context (parallel)
 
 Use the Data Gathering steps from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` to pull calendar, email, and Notion data.
 
-### Step C2: Ask for Brain Dump
+### Step C2: Ask for Brain Dump (or Reuse Evening Review)
+
+**Before prompting, check for a recent evening review brain dump:**
+
+If `## Notion: Daily Briefs` is enabled and `evening_review_detected` is true (set in Step 0 / C0.5) and `evening_review_context` was populated in Step C0.5:
+1. Check if the evening review context contains a brain dump.
+2. If a brain dump exists:
+   - Surface it: "I found your brain dump from last night's evening review: [summary]. Anything to add or change for this morning?"
+   - If the user adds items, merge them with the evening brain dump.
+   - If the user says nothing or confirms, proceed with the evening brain dump as context.
+   - **Skip the full brain dump prompt below.**
+
+**If no recent brain dump is found** (no evening review context, or Daily Briefs is not enabled):
 
 Present a brief summary of what you found:
 - "Found X calendar events today, Y tomorrow"
@@ -197,11 +230,25 @@ Use the Classification Framework from `${CLAUDE_PLUGIN_ROOT}/references/classifi
 
 Take ALL inputs — calendar, email, projects, pipeline, carryover, and the user's brain dump — and classify each item.
 
+If `evening_review_context` was populated in Step C0.5, use the evening review's classification as baseline context: items the user flagged as important last night should be weighted higher today.
+
 ### Step C4: Present the Morning Brief
 
 Output in the standard brief format (same as Step P4 above, but without the "updated from evening plan" header and changes-since-last-night line).
 
 If Daily Briefs is enabled: set page status to "Active", write the brief to the page, set Red Count, Yellow Count, and Planned Items properties.
+
+### Step C4.5: Material Change Check (if evening review context exists)
+
+**If `evening_review_context` was populated in Step C0.5** (meaning an evening review ran recently):
+1. Compare the fresh classification from Step C3 against the evening review's plan.
+2. Determine if there are **material changes** (defined in `${CLAUDE_PLUGIN_ROOT}/references/classification.md`).
+3. **If no material changes:** Add to the brief output: "Plan matches last night's review — no material changes." Proceed to Step C5 (Execute GREEN).
+4. **If material changes exist:** Present them explicitly before executing: "Since last night: [list changes — e.g., '1 new RED item: [describe]', '1 meeting cancelled: [describe]', 'GRAY item [X] promoted to YELLOW (3-day aging)']." Then proceed to Step C5.
+
+**If no evening review context:** Proceed to Step C5 immediately per the Immediate Execution Rule.
+
+**Note:** This step does NOT reintroduce a "go" gate. Execution proceeds regardless. The purpose is transparency — Kevin should know whether the plan changed overnight, even though the system will execute either way.
 
 ### Step C5: Execute GREEN Items
 
