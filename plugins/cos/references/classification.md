@@ -41,7 +41,7 @@ Shared classification logic referenced by both morning-sweep.md and evening-revi
 
 Based on the calendar:
 1. Calculate total hours between work start (~8am) and work end (~6pm) in user's timezone
-2. Subtract all meeting durations (include buffer for back-to-back)
+2. Subtract all meeting durations plus 10 minutes buffer per meeting (context-switching time). For back-to-back meetings (< 15 min gap between them), do not double-count the buffer — count only one 10-minute buffer for the pair.
 3. Subtract 30min for lunch if no lunch block exists
 4. The remainder is available capacity
 5. Estimate each RED item at 30-60min, YELLOW at 20-40min, GREEN at 10-20min
@@ -52,9 +52,20 @@ Based on the calendar:
 
 When items carry over from a previous day:
 - Carryover items start one level higher than they ended
-- A GRAY item deferred 3+ consecutive days with no change in the underlying project/email status → bump to YELLOW and flag it
+- A GRAY item deferred 3+ consecutive days with no change in the underlying project/email status → bump to YELLOW and flag prominently: "[GRAY->YELLOW] [item] — deferred [N] consecutive days, needs attention." This check is mandatory before presenting any brief. GRAY items MUST have corresponding tasks in the Tasks DB (created by evening review Step 5 with `[GRAY]` title prefix) — if a GRAY item has no task, that is a data integrity gap; create the task immediately.
 - A YELLOW item with prep done but no user action → re-surface as YELLOW; don't silently drop it
 - A RED item that wasn't resolved → surfaces again as RED, unless email or Notion shows it's since been handled
 - Label carryover items clearly — e.g. `[carried over from March 14]` — so the user knows they're not new
 
 The goal: no item should ever disappear just because it got pushed to GRAY or left unactioned for a day.
+
+## Material Change Definition
+
+A material change is any of the following compared to the evening review's plan:
+- A new RED item appeared (urgent email, cancelled/added meeting, deadline surfaced)
+- An item moved from YELLOW/GREEN to RED based on fresh data
+- A meeting was cancelled or added (changes capacity)
+- A new email from a monitored domain flagged as needing response
+- A carryover item aged into YELLOW per aging rules
+
+NOT material: new GRAY items, minor email threads, informational updates requiring no action.

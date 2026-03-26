@@ -14,6 +14,18 @@ Load these values from me.md:
 - `daily_briefs_database_id` from `## Notion: Daily Briefs`
 - All rules from `## My Rules` and `## Custom Rules`
 
+## Timezone Rule — Non-Negotiable
+
+All times presented to the user MUST be in the timezone from me.md. This applies to:
+- Calendar event times (the `gcal_list_events` start/end params should use the user's timezone; verify returned times match)
+- Email timestamps (`gmail_search_messages` and `gmail_read_message` return UTC — convert before displaying)
+- Telegram message timestamps (arrive in UTC — convert before displaying)
+- Capacity calculations (work hours 8am-6pm are in the user's local timezone)
+- Carryover labels (e.g., "[overdue from March 14]" — use the user's local date, not UTC date)
+- Any other time reference in the brief or conversation
+
+Never display raw UTC to the user. If conversion is ambiguous, show both: "10:00 AM ET (14:00 UTC)."
+
 ## Notion Write-Back Rule
 
 **Update the Daily Brief page in Notion after every meaningful interaction.** This is non-negotiable. The user should be able to open the Daily Brief from any device at any point and see the current state.
@@ -108,6 +120,14 @@ For emails that should be sent from an unconnected account:
   Body of the email here.
   ```
 - Tell the user which account to send from and how (per the send instructions in me.md): "[Account label] draft for [recipient] saved to your Daily Brief in Notion. [Send instructions from me.md]"
+
+### Timezone Boundary for Email Queries
+
+When checking Gmail for emails sent "today" (e.g., accountability review verifying if a draft was sent), define "today" using the user's timezone from me.md:
+- Start of today = midnight in user's timezone (e.g., 00:00 ET = 05:00 UTC during EDT, 04:00 UTC during EST)
+- End of today = current time in user's timezone
+
+When calling `gmail_search_messages`, the `newer_than:1d` filter uses a rolling 24-hour window from the call time, which is usually sufficient. But when the date boundary matters (e.g., accountability review at 11 PM ET — which is past midnight UTC), use explicit `after:` and `before:` epoch timestamps converted from the user's timezone boundaries.
 
 ## Task Creation
 
