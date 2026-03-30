@@ -25,16 +25,16 @@ All of the following qualify as patch-only changes:
 ### Version bump locations
 
 When releasing any version, update **both** of the following files:
-1.  —  field
-2.  —  field
+1. `plugins/cos/.claude-plugin/plugin.json` — `version` field
+2. `.claude-plugin/marketplace.json` — `version` field
 
 These must always match. A mismatch is a release error.
 
 ### Commit and tag conventions
 
-- Branch:  for patches,  for minor features
-- Commit message:  or 
-- After merging to main: tag as  and push the tag
+- Branch: `fix/<topic>` for patches, `feat/<topic>` for minor features
+- Commit message: `fix(<scope>): description` or `feat(<scope>): description`
+- After merging to main: tag as `vX.Y.Z` and push the tag
 
 ### Current version history
 
