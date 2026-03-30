@@ -32,6 +32,7 @@ These must always match. A mismatch is a release error.
 
 ### Commit and tag conventions
 
+<<<<<<< HEAD
 - Branch: `fix/<topic>` for patches, `feat/<topic>` for minor features
 - Commit message: `fix(<scope>): description` or `feat(<scope>): description`
 - After merging to main: tag as `vX.Y.Z` and push the tag
