@@ -192,10 +192,10 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 - Write the plan from Step 5 to the "Plan" section (see page body structure in `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`)
 - Set page status to "Planned"
 - Set `Planned Items` property to total RED + YELLOW + GREEN count
-- When creating the next workday's Daily Brief page, include these properties from the Step 5 classification:
+- When creating OR updating the next workday's Daily Brief page, ALWAYS set these properties from the Step 5 classification:
   - **Red Count** (number): Count of items classified RED in the plan
   - **Yellow Count** (number): Count of items classified YELLOW in the plan
-  - These properties MUST be set at page creation time. The morning sweep's Pre-planned Path reads these values to build the priority summary. If omitted, the morning sweep will read null and skip the priority counts.
+  - These properties MUST be set on every write to the next-workday page — whether creating a new page or updating an existing one. The morning sweep's Pre-planned Path reads these values to build the priority summary. Stale or missing counts cause incorrect priority totals.
 - Set Date to next workday's date
 
 **If Daily Briefs is not enabled:** Skip this step. The plan was already presented in conversation.
