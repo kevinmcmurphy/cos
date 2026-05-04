@@ -208,6 +208,8 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 
 If not enabled, skip.
 
+**Also write a local daily-sweep artifact** (after today's Notion page is updated). See the "Local Daily-Sweep Artifact" section at the end of this skill for the exact write procedure. Write the `## Evening` section (append to today's file).
+
 ## Step 8: Finalize
 
 If Daily Briefs is enabled:
@@ -215,3 +217,101 @@ If Daily Briefs is enabled:
 
 If not enabled:
 > "Tomorrow's plan is ready. Morning sweep will gather fresh data and execute. Good night."
+
+---
+
+## Local Daily-Sweep Artifact
+
+This section defines the local artifact append procedure. It is invoked at the point marked in Step 7 above. Execute it after all Notion and Telegram writes for the evening review are complete. The local artifact is **non-fatal** — if any file operation fails, report the error in your final summary to Kevin but do not retry and do not unwind any prior writes.
+
+### Repo Root Resolution
+
+Resolve `REPO_ROOT` using this priority order:
+1. Check environment variable `$KLMC_REPO`. If set and the path contains `agents/registry.yaml`, use it.
+2. Check `/Users/kevin/Projects/klmc-agent-home`. If it exists and contains `agents/registry.yaml`, use it.
+3. Fall back to `./` (current working directory). Note in final summary: "Local artifact written to ./reports/daily-sweeps/ — repo root could not be auto-detected."
+
+### Paths
+
+```
+YMD  = current date in America/New_York  (format: YYYY-MM-DD)
+DIR  = $REPO_ROOT/reports/daily-sweeps
+FILE = $DIR/$YMD.md
+LINK = $DIR/latest.md
+```
+
+### Write Steps
+
+1. Run: `/bin/mkdir -p "$DIR"`
+
+2. **Handle missing file (morning sweep was skipped):** If `$FILE` does not exist, create it with frontmatter only before appending:
+   ```
+   ---
+   date: YYYY-MM-DD
+   timezone: America/New_York
+   created_by: cos:evening-review
+   created_at: YYYY-MM-DDTHH:MM:SS-HH:MM
+   ---
+
+   # Daily Sweeps — YYYY-MM-DD
+   ```
+
+3. Append the `## Evening` section to `$FILE`. Ensure the file ends with a blank line before appending. Use this template (fill bracketed fields from session context; `_unavailable_` if a field cannot be determined; `_none_` for empty list subsections):
+
+```
+## Evening
+
+- **Run at:** YYYY-MM-DD HH:MM ET
+- **Skill:** cos:evening-review
+- **Notion brief:** https://www.notion.so/PAGE-ID-WITHOUT-DASHES
+- **Telegram message id:** MESSAGE_ID
+
+### Brain Dump
+
+VERBATIM OR SUMMARIZED BRAIN DUMP FROM STEP 1
+
+### Scorecard
+
+- **Planned:** X items
+- **Completed:** Y items
+- **Rate:** Z% (target: 80%)
+- **Pattern note:** PATTERN CHECK RESULT FROM STEP 3
+
+### Tomorrow's Plan
+
+SUMMARY OF THE NEXT WORKDAY PLAN FROM STEP 5 (RED/YELLOW/GREEN/GRAY counts and key items)
+
+### Telegram Summary Sent
+
+```
+VERBATIM TEXT OF THE SUMMARY MESSAGE SENT TO KEVIN
+```
+
+### Actions Taken
+
+- ACTION — OUTCOME
+```
+
+   Notes on specific fields:
+   - `Notion brief` URL: derive from today's Daily Brief page ID — format as `https://www.notion.so/{id-without-dashes}`.
+   - `Telegram message id`: the `message_id` returned by `mcp__plugin_telegram_telegram__reply` for the evening summary. If no Telegram message was sent, write `_unavailable_`.
+   - `Brain Dump`: include a verbatim or lightly condensed version of what the user shared in Step 1.
+   - `Scorecard`: pull from the Step 2 accountability review output.
+   - `Pattern note`: the one-sentence result from Step 3 (e.g., "Below 80% for 3 of last 5 days — consider lighter morning plans.").
+   - `Tomorrow's Plan`: a condensed summary — RED count, YELLOW count, GREEN count, GRAY count, and the top 2–3 RED items by name.
+   - `Telegram Summary Sent`: verbatim text passed to `text` parameter of the reply. If none, write `_none_`.
+   - `Actions Taken`: one bullet per system update or task creation from Steps 4–6. If none, write `_none_`.
+
+4. Update the symlink atomically. Run these two commands in sequence:
+   ```
+   cd "$DIR"
+   /bin/ln -sfn "$YMD.md" latest.md
+   ```
+   Use exactly `/bin/ln -sfn` (not `rm` + `ln`). The target is a relative basename, not an absolute path.
+
+### On Error
+
+If any step fails:
+- Do not retry.
+- Do not unwind Notion or Telegram writes (they are already complete).
+- Include this in your final summary to Kevin: "Local sweep artifact write failed: [error description]. Notion brief and Telegram summary were not affected."
