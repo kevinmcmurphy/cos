@@ -127,6 +127,14 @@ Only include PIPELINE if the Pipeline module is enabled. Only include project-re
 
 **Immediately write the brief to the Daily Brief page.** Update Red Count and Yellow Count properties.
 
+**Also write a local markdown copy of the brief.** Determine the project root (the directory from which Claude Code was invoked — use the `cwd` available in the session context, or fall back to the parent of the `.claude/` directory). Write the brief content to:
+
+```
+{project_root}/reports/daily-briefs/YYYY-MM-DD-daily.md
+```
+
+Use today's date in America/New_York timezone (format: `YYYY-MM-DD`). Create the `reports/daily-briefs/` directory if it does not exist. If the file already exists, overwrite it — the morning sweep is the source of truth for the day's brief.
+
 ### Step P5: Execute GREEN Items Immediately
 
 No waiting for "go." Start working through GREEN items right away. This is safe because the user already reviewed and approved the plan during last night's evening review. The adjustment ask at the end serves as the safety valve.
@@ -237,6 +245,14 @@ If `evening_review_context` was populated in Step C0.5, use the evening review's
 Output in the standard brief format (same as Step P4 above, but without the "updated from evening plan" header and changes-since-last-night line).
 
 If Daily Briefs is enabled: set page status to "Active", write the brief to the page, set Red Count, Yellow Count, and Planned Items properties.
+
+**Also write a local markdown copy of the brief.** Determine the project root (the directory from which Claude Code was invoked — use the `cwd` available in the session context, or fall back to the parent of the `.claude/` directory). Write the brief content to:
+
+```
+{project_root}/reports/daily-briefs/YYYY-MM-DD-daily.md
+```
+
+Use today's date in America/New_York timezone (format: `YYYY-MM-DD`). Create the `reports/daily-briefs/` directory if it does not exist. If the file already exists, overwrite it — the morning sweep is the source of truth for the day's brief.
 
 ### Step C4.5: Material Change Check (if evening review context exists)
 
