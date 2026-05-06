@@ -1,6 +1,6 @@
 {
   "name": "chief-of-staff",
-  "description": "AI Chief of Staff for solo operators \u2014 morning sweep and evening review",
+  "description": "AI Chief of Staff for solo operators — morning sweep and evening review",
   "owner": {
     "name": "Kevin McMurphy"
   },
@@ -8,8 +8,8 @@
     {
       "name": "cos",
       "source": "./plugins/cos",
-      "description": "AI Chief of Staff for solo operators. Morning sweep plans your day, evening review closes it out. Scans calendar, email, and Notion \u2014 classifies everything by what needs your brain vs. what can be handled.",
-      "version": "0.3.1",
+      "description": "AI Chief of Staff for solo operators. Morning sweep plans your day, evening review closes it out. Scans calendar, email, and Notion — classifies everything by what needs your brain vs. what can be handled.",
+      "version": "0.4.0",
       "author": {
         "name": "Kevin McMurphy"
       },

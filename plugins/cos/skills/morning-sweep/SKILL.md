@@ -127,6 +127,8 @@ Only include PIPELINE if the Pipeline module is enabled. Only include project-re
 
 **Immediately write the brief to the Daily Brief page.** Update Red Count and Yellow Count properties.
 
+**Also write a local daily-sweep artifact** (after the Notion write is complete). See the "Local Daily-Sweep Artifact" section at the end of this skill for the exact write procedure. Write the `## Morning` section.
+
 ### Step P5: Execute GREEN Items Immediately
 
 No waiting for "go." Start working through GREEN items right away. This is safe because the user already reviewed and approved the plan during last night's evening review. The adjustment ask at the end serves as the safety valve.
@@ -238,6 +240,8 @@ Output in the standard brief format (same as Step P4 above, but without the "upd
 
 If Daily Briefs is enabled: set page status to "Active", write the brief to the page, set Red Count, Yellow Count, and Planned Items properties.
 
+**Also write a local daily-sweep artifact** (after the Notion write is complete). See the "Local Daily-Sweep Artifact" section at the end of this skill for the exact write procedure. Write the `## Morning` section.
+
 ### Step C4.5: Material Change Check (if evening review context exists)
 
 **If `evening_review_context` was populated in Step C0.5** (meaning an evening review ran recently):
@@ -270,3 +274,105 @@ After all GREEN and YELLOW items are processed:
 If the user adjusts: make the changes, update the Notion page.
 
 Once adjustments are done (or the user confirms no changes): if Daily Briefs is enabled, set Status to "Complete".
+
+---
+
+## Local Daily-Sweep Artifact
+
+This section defines the local artifact write procedure. It is invoked at the points marked in Steps P4 and C4 above. Execute it after all Notion and Telegram writes for the morning sweep are complete. The local artifact is **non-fatal** — if any file operation fails, report the error in your final summary to Kevin but do not retry and do not unwind any prior writes.
+
+### Repo Root Resolution
+
+Resolve `REPO_ROOT` using this priority order:
+1. Check environment variable `$KLMC_REPO`. If set and the path contains `agents/registry.yaml`, use it.
+2. Check `/Users/kevin/Projects/klmc-agent-home`. If it exists and contains `agents/registry.yaml`, use it.
+3. Fall back to `./` (current working directory). Note in final summary: "Local artifact written to ./reports/daily-sweeps/ — repo root could not be auto-detected."
+
+### Paths
+
+```
+YMD  = current date in America/New_York  (format: YYYY-MM-DD)
+DIR  = $REPO_ROOT/reports/daily-sweeps
+FILE = $DIR/$YMD.md
+LINK = $DIR/latest.md
+```
+
+### Write Steps
+
+1. Run: `/bin/mkdir -p "$DIR"`
+
+2. **Rotate on same-day re-run:** If `$FILE` already exists, run:
+   `/bin/mv "$FILE" "$DIR/$YMD.prev.md"`
+   (This overwrites any older `.prev.md`. It is a crash-recovery safety net, not an archive.)
+
+3. Write `$FILE` with the following content. Fill each bracketed field from context you already have in this session. If a field value is unavailable, write `_unavailable_`. For empty list subsections, write `_none_` under the heading rather than omitting the heading.
+
+```
+---
+date: YYYY-MM-DD
+timezone: America/New_York
+created_by: cos:morning-sweep
+created_at: YYYY-MM-DDTHH:MM:SS-HH:MM
+---
+
+# Daily Sweeps — YYYY-MM-DD
+
+## Morning
+
+- **Run at:** YYYY-MM-DD HH:MM ET
+- **Skill:** cos:morning-sweep
+- **Notion brief:** https://www.notion.so/PAGE-ID-WITHOUT-DASHES
+- **Telegram message id:** MESSAGE_ID
+
+### Classified Items
+
+#### RED — Yours
+- ITEM — WHY
+
+#### YELLOW — Prep
+- ITEM — WHAT WAS PREPPED
+
+#### GREEN — Handle
+- ITEM — WHAT WAS HANDLED
+
+#### GRAY — Not today
+- ITEM — REASON
+
+### Drafts Created
+
+- **Gmail (kevin@klmc.co):** SUBJECT — draft id `DRAFT-ID`
+- **Adapture (Notion code block):** SUBJECT — see Notion brief "Drafts: Adapture" section
+
+### Telegram Summary Sent
+
+```
+VERBATIM TEXT OF THE SUMMARY MESSAGE SENT TO KEVIN
+```
+
+### Actions Taken
+
+- ACTION — OUTCOME
+```
+
+   Notes on specific fields:
+   - `created_at`: ISO 8601 timestamp with ET offset (e.g., `2026-05-04T07:42:00-04:00`)
+   - `Notion brief` URL: derive from the Notion page ID returned by the Notion MCP — format as `https://www.notion.so/{id-without-dashes}`. If the page ID is unavailable, write `_unavailable_`.
+   - `Telegram message id`: the `message_id` returned by `mcp__plugin_telegram_telegram__reply`. If unavailable (e.g., no Telegram message was sent this run), write `_unavailable_`.
+   - `Classified Items`: mirror the same RED/YELLOW/GREEN/GRAY content sent to Notion. Keep one bullet per item. For empty subsections, write `_none_`.
+   - `Drafts Created`: list each Gmail draft with its draft id; list each Adapture draft by subject. If no drafts were created, write `_none_` under the heading.
+   - `Telegram Summary Sent`: the verbatim text string passed to the `text` parameter of `mcp__plugin_telegram_telegram__reply`. If no Telegram message was sent this run, write `_none_`.
+   - `Actions Taken`: one bullet per executed action with outcome. If none, write `_none_`.
+
+4. Update the symlink atomically. Run these two commands in sequence:
+   ```
+   cd "$DIR"
+   /bin/ln -sfn "$YMD.md" latest.md
+   ```
+   Use exactly `/bin/ln -sfn` (not `rm` + `ln`). The target is a relative basename, not an absolute path.
+
+### On Error
+
+If step 1, 2, 3, or 4 fails:
+- Do not retry.
+- Do not unwind Notion or Telegram writes (they are already complete).
+- Include this in your final summary to Kevin: "Local sweep artifact write failed: [error description]. Notion brief and Telegram summary were not affected."
