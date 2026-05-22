@@ -108,6 +108,16 @@ Follow Email Draft Routing from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md
 
 Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` for any tasks created during this step.
 
+## Step 4.5: Email Triage Pass
+
+Run the Email Triage workflow defined in `${CLAUDE_PLUGIN_ROOT}/skills/email-triage/SKILL.md` against today's Daily Brief page (skip its Step 2 — reuse the page ID from Step 0 here). This closes out the inbox before tomorrow's plan is written so that:
+
+- Threads Kevin or Claude addressed today get re-labeled `Responded`.
+- New unread items received during the workday get classified into the GPS taxonomy.
+- Drafts are queued for the morning so the morning sweep starts with `Drafts: Gmail` already populated.
+
+The triage output appends an `Email Triage — HH:MM ET` section to today's Daily Brief page. Any Action Needed items here should be considered when classifying tomorrow's plan in Step 5 — they likely belong on the RED or YELLOW list.
+
 ## Step 5: Plan Next Workday
 
 ### Determine the Target Day

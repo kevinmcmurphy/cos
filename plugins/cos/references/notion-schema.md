@@ -87,6 +87,16 @@ Any structured outputs from the sweep:
 - Notion updates: use Notion bulleted_list blocks describing what was changed
 - Tasks created: use Notion bulleted_list blocks with task name and linked project
 
+### 5.5. Email Triage (appended by email-triage skill)
+
+Written by the `email-triage` skill — either standalone, or when invoked as a sub-step of morning-sweep or evening-review.
+
+This section can appear multiple times per day. Each run appends a new subsection titled `Email Triage — HH:MM ET` (timestamp in user's timezone). Never overwrite a prior run's subsection.
+
+Each subsection contains the GPS-classified inbox state, counts per label, drafts created, and Notion tasks created for `! Action Needed (Kevin)` items. Format is defined in the "Output Format" section of `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`.
+
+Drafts created during triage also appear in the "Drafts: Gmail" section (per Email Draft Routing). Tasks created during triage also appear in the "Outputs" section (per Task Creation). The Email Triage section itself is a summary view — it duplicates those entries on purpose so Kevin can see the full triage state in one place.
+
 ### 6. Evening Review (appended by evening review)
 
 Written at end of day by the evening review skill.

@@ -45,3 +45,5 @@ These must always match. A mismatch is a release error.
 | 0.2.0 | — | Added Pre-planned Path, carryover aging, evening review step 6 |
 | 0.3.0 | — | MCP migration (gws → gcal/gmail MCPs), Immediate Execution Rule, Cold Start restructure, inline aging |
 | 0.3.1 | 2026-03-26 | Sweep quality gates: brain dump gate, timezone rule, material change check, GRAY persistence, fallback evening detection, meeting buffer, email timezone boundary, Cold Start evening context |
+| 0.4.0 | — | Local daily-sweep artifact written by morning-sweep and evening-review |
+| 0.5.0 | 2026-05-22 | Email Triage skill: GPS-label classifier, voice-matched drafting from last 5 sent-to-recipient messages, Notion task creation for Action Needed, invocation hooks in morning-sweep and evening-review |

@@ -129,6 +129,14 @@ Only include PIPELINE if the Pipeline module is enabled. Only include project-re
 
 **Also write a local daily-sweep artifact** (after the Notion write is complete). See the "Local Daily-Sweep Artifact" section at the end of this skill for the exact write procedure. Write the `## Morning` section.
 
+### Step P4.5: Email Triage Pass
+
+Run the Email Triage workflow defined in `${CLAUDE_PLUGIN_ROOT}/skills/email-triage/SKILL.md` against today's Daily Brief page (skip its Step 2 — reuse the page ID from Step 0 here). This labels the broader inbox per the GPS taxonomy in `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`, drafts voice-matched replies for Action Needed and To Respond items, and creates Notion tasks for Action Needed (when Tasks is enabled).
+
+The triage output appends an `Email Triage — HH:MM ET` section to today's Daily Brief page and any Action Needed items that surface here that were not already in the morning brief should be flagged in the Step P7 summary. Drafts created by triage land in the same `Drafts: Gmail` section used by the rest of the sweep.
+
+This step is distinct from the email scan in Step P1 — that scan is monitored-domains-only and feeds RED/YELLOW/GREEN classification. The triage pass operates over the full inbox and uses the GPS taxonomy.
+
 ### Step P5: Execute GREEN Items Immediately
 
 No waiting for "go." Start working through GREEN items right away. This is safe because the user already reviewed and approved the plan during last night's evening review. The adjustment ask at the end serves as the safety valve.
@@ -253,6 +261,12 @@ If Daily Briefs is enabled: set page status to "Active", write the brief to the 
 **If no evening review context:** Proceed to Step C5 immediately per the Immediate Execution Rule.
 
 **Note:** This step does NOT reintroduce a "go" gate. Execution proceeds regardless. The purpose is transparency — Kevin should know whether the plan changed overnight, even though the system will execute either way.
+
+### Step C4.6: Email Triage Pass
+
+Run the Email Triage workflow defined in `${CLAUDE_PLUGIN_ROOT}/skills/email-triage/SKILL.md` against today's Daily Brief page (skip its Step 2 — reuse the page ID from Step 0 here). This labels the broader inbox per the GPS taxonomy in `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`, drafts voice-matched replies for Action Needed and To Respond items, and creates Notion tasks for Action Needed (when Tasks is enabled).
+
+The triage output appends an `Email Triage — HH:MM ET` section to today's Daily Brief page. Any Action Needed items that surface here but were not in the morning brief should be flagged in the Step C7 summary so Kevin sees what came in beyond the monitored-domains scan from Step C1.
 
 ### Step C5: Execute GREEN Items
 
