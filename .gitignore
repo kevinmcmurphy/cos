@@ -3,6 +3,10 @@ config.md
 me.md
 *.local.md
 
+# Local daily-sweep reports (contain PII — email subjects, senders, body snippets)
+reports/daily-sweeps/*
+!reports/daily-sweeps/.gitkeep
+
 # OS files
 .DS_Store
 BUILD.md
