@@ -87,6 +87,16 @@ Any structured outputs from the sweep:
 - Notion updates: use Notion bulleted_list blocks describing what was changed
 - Tasks created: use Notion bulleted_list blocks with task name and linked project
 
+### 5.5. Email Triage (written by email-notion-sink skill)
+
+Written by the `email-notion-sink` skill — either via the standalone `email-triage` orchestrator, or when invoked as a sub-step of morning-sweep or evening-review.
+
+**Supersede behavior:** Each run replaces the body of the existing `Email Triage` section (updating the timestamp in the heading). If no section exists yet, it is created. Prior run contents are not preserved in Notion — the local artifact in `reports/daily-sweeps/` retains the full history.
+
+Each section contains the GPS-classified inbox state, counts per label, drafts created, and Notion tasks created for `! Action Needed (klmc)` items. Format is defined in the "Output Format" section of `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`.
+
+Drafts created during triage also appear in the "Drafts: Gmail" section (per Email Draft Routing). Tasks created during triage also appear in the "Outputs" section (per Task Creation). The Email Triage section itself is a summary view — it duplicates those entries on purpose so Kevin can see the full triage state in one place.
+
 ### 6. Evening Review (appended by evening review)
 
 Written at end of day by the evening review skill.
@@ -96,6 +106,21 @@ Contents:
 - **Pattern Check** — Multi-day completion trend (if sufficient data)
 - **System Updates** — Log of all database updates made during evening review
 - **Brain Dump** — User's evening brain dump (feeds into next day's plan)
+
+## Tasks Database Schema
+
+The Tasks DB is configured via `## Notion: Tasks` in me.md. The following properties are required for email-triage dedup and task creation:
+
+| Property | Type | Notes |
+|---|---|---|
+| Name | title | Task title (email subject with Re:/Fwd: stripped) |
+| Status | select | `Not Started`, `In Progress`, `Done`, `Archive`, `Dropped` |
+| Deadline | date | ISO 8601 date |
+| Project | relation | Linked project (required — no floating tasks) |
+| Gmail Thread ID | text | Gmail thread ID for email-sourced tasks. Used for idempotent dedup — query by this property, not by URL substring. Match regardless of task status (open or closed). |
+| Gmail Thread URL | url | `https://mail.google.com/mail/u/0/#inbox/<threadId>` — for direct navigation from Notion. |
+
+**Dedup query for email-sourced tasks:** Filter Tasks DB where `Gmail Thread ID` = `<threadId>`. Do not rely on URL substring matching. The dedup check applies regardless of task status — a closed task for the same thread should not be duplicated.
 
 ## Writing to the Database
 

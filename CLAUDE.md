@@ -32,7 +32,6 @@ These must always match. A mismatch is a release error.
 
 ### Commit and tag conventions
 
-<<<<<<< HEAD
 - Branch: `fix/<topic>` for patches, `feat/<topic>` for minor features
 - Commit message: `fix(<scope>): description` or `feat(<scope>): description`
 - After merging to main: tag as `vX.Y.Z` and push the tag
@@ -45,3 +44,5 @@ These must always match. A mismatch is a release error.
 | 0.2.0 | — | Added Pre-planned Path, carryover aging, evening review step 6 |
 | 0.3.0 | — | MCP migration (gws → gcal/gmail MCPs), Immediate Execution Rule, Cold Start restructure, inline aging |
 | 0.3.1 | 2026-03-26 | Sweep quality gates: brain dump gate, timezone rule, material change check, GRAY persistence, fallback evening detection, meeting buffer, email timezone boundary, Cold Start evening context |
+| 0.4.0 | 2026-05-04 | Local daily-sweep artifact written by morning-sweep and evening-review |
+| 0.5.0 | 2026-05-22 | Email Triage: GPS-label classifier (8 labels, multi-inbox klmc suffix), voice-matched drafting, Notion task creation. Split into email-classify / email-voice-draft / email-notion-sink sub-skills. Prompt-injection firewall, voice-profile cache, kevin-locked sentinel, supersede output, gmail_* tool names, Gmail Thread ID dedup. |

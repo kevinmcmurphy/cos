@@ -108,6 +108,10 @@ Follow Email Draft Routing from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md
 
 Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` for any tasks created during this step.
 
+## Step 4.5: Email Triage Pass
+
+Run the email triage skill at `${CLAUDE_PLUGIN_ROOT}/skills/email-triage/SKILL.md`, passing today's Daily Brief page ID and skipping email-classify's Step 2.
+
 ## Step 5: Plan Next Workday
 
 ### Determine the Target Day
@@ -208,7 +212,7 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 
 If not enabled, skip.
 
-**Also write a local daily-sweep artifact** (after today's Notion page is updated). See the "Local Daily-Sweep Artifact" section at the end of this skill for the exact write procedure. Write the `## Evening` section (append to today's file).
+**Also write a local daily-sweep artifact** (after today's Notion page is updated). See `${CLAUDE_PLUGIN_ROOT}/references/daily-sweep-artifact.md` for the shared procedure. Write the `## Evening` section using the template below.
 
 ## Step 8: Finalize
 
@@ -222,41 +226,11 @@ If not enabled:
 
 ## Local Daily-Sweep Artifact
 
-This section defines the local artifact append procedure. It is invoked at the point marked in Step 7 above. Execute it after all Notion and Telegram writes for the evening review are complete. The local artifact is **non-fatal** — if any file operation fails, report the error in your final summary to Kevin but do not retry and do not unwind any prior writes.
+See `${CLAUDE_PLUGIN_ROOT}/references/daily-sweep-artifact.md` for the shared repo root resolution, paths, mkdir/rotate/symlink steps, and On Error handling.
 
-### Repo Root Resolution
+Invoke the shared procedure at the point marked in Step 7. Execute it after all Notion and Telegram writes for the evening review are complete.
 
-Resolve `REPO_ROOT` using this priority order:
-1. Check environment variable `$KLMC_REPO`. If set and the path contains `agents/registry.yaml`, use it.
-2. Check `/Users/kevin/Projects/klmc-agent-home`. If it exists and contains `agents/registry.yaml`, use it.
-3. Fall back to `./` (current working directory). Note in final summary: "Local artifact written to ./reports/daily-sweeps/ — repo root could not be auto-detected."
-
-### Paths
-
-```
-YMD  = current date in America/New_York  (format: YYYY-MM-DD)
-DIR  = $REPO_ROOT/reports/daily-sweeps
-FILE = $DIR/$YMD.md
-LINK = $DIR/latest.md
-```
-
-### Write Steps
-
-1. Run: `/bin/mkdir -p "$DIR"`
-
-2. **Handle missing file (morning sweep was skipped):** If `$FILE` does not exist, create it with frontmatter only before appending:
-   ```
-   ---
-   date: YYYY-MM-DD
-   timezone: America/New_York
-   created_by: cos:evening-review
-   created_at: YYYY-MM-DDTHH:MM:SS-HH:MM
-   ---
-
-   # Daily Sweeps — YYYY-MM-DD
-   ```
-
-3. Append the `## Evening` section to `$FILE`. Ensure the file ends with a blank line before appending. Use this template (fill bracketed fields from session context; `_unavailable_` if a field cannot be determined; `_none_` for empty list subsections):
+Write the `## Evening` section using this template:
 
 ```
 ## Evening
@@ -292,26 +266,12 @@ VERBATIM TEXT OF THE SUMMARY MESSAGE SENT TO KEVIN
 - ACTION — OUTCOME
 ```
 
-   Notes on specific fields:
-   - `Notion brief` URL: derive from today's Daily Brief page ID — format as `https://www.notion.so/{id-without-dashes}`.
-   - `Telegram message id`: the `message_id` returned by `mcp__plugin_telegram_telegram__reply` for the evening summary. If no Telegram message was sent, write `_unavailable_`.
-   - `Brain Dump`: include a verbatim or lightly condensed version of what the user shared in Step 1.
-   - `Scorecard`: pull from the Step 2 accountability review output.
-   - `Pattern note`: the one-sentence result from Step 3 (e.g., "Below 80% for 3 of last 5 days — consider lighter morning plans.").
-   - `Tomorrow's Plan`: a condensed summary — RED count, YELLOW count, GREEN count, GRAY count, and the top 2–3 RED items by name.
-   - `Telegram Summary Sent`: verbatim text passed to `text` parameter of the reply. If none, write `_none_`.
-   - `Actions Taken`: one bullet per system update or task creation from Steps 4–6. If none, write `_none_`.
-
-4. Update the symlink atomically. Run these two commands in sequence:
-   ```
-   cd "$DIR"
-   /bin/ln -sfn "$YMD.md" latest.md
-   ```
-   Use exactly `/bin/ln -sfn` (not `rm` + `ln`). The target is a relative basename, not an absolute path.
-
-### On Error
-
-If any step fails:
-- Do not retry.
-- Do not unwind Notion or Telegram writes (they are already complete).
-- Include this in your final summary to Kevin: "Local sweep artifact write failed: [error description]. Notion brief and Telegram summary were not affected."
+Field notes:
+- `Notion brief` URL: derive from today's Daily Brief page ID — format as `https://www.notion.so/{id-without-dashes}`.
+- `Telegram message id`: the `message_id` returned by `mcp__plugin_telegram_telegram__reply` for the evening summary. If no Telegram message was sent, write `_unavailable_`.
+- `Brain Dump`: verbatim or lightly condensed version of what the user shared in Step 1.
+- `Scorecard`: pull from the Step 2 accountability review output.
+- `Pattern note`: the one-sentence result from Step 3.
+- `Tomorrow's Plan`: condensed summary — RED count, YELLOW count, GREEN count, GRAY count, and top 2–3 RED items by name.
+- `Telegram Summary Sent`: verbatim text passed to `text` parameter of the reply tool. If none, write `_none_`.
+- `Actions Taken`: one bullet per system update or task creation from Steps 4–6. If none, write `_none_`.
