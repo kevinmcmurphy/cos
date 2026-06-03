@@ -18,12 +18,12 @@ Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logi
 
 If `## Notion: Daily Briefs` is enabled in me.md:
 
-1. **Search by Date property** (not title). Query the Daily Briefs database for a page with Date = today. This finds both old-format ("Morning Sweep — YYYY-MM-DD") and new-format ("YYYY-MM-DD") pages.
+1. **Search by Date property** (not title). Query the Daily Briefs database for a page with Date = today. This finds pages regardless of title format — legacy ("Morning Sweep — YYYY-MM-DD", "YYYY-MM-DD") and current ("YYYY-MM-DD - Daily").
 
 2. **Branch based on what you find:**
    - **Page found with Status = "Planned"** → This day was pre-planned by an evening review. Follow the **Pre-planned Path** below.
    - **Page found with any other status** → Reuse that page. Check the **fallback** below, then follow the **Cold Start Path**.
-   - **No page found** → Check the **fallback** below. Create a new page titled "YYYY-MM-DD" with Date = today, Status = "Draft". Follow the **Cold Start Path**.
+   - **No page found** → Check the **fallback** below. Create a new page titled "YYYY-MM-DD - Daily" with Date = today, Status = "Draft". Follow the **Cold Start Path**.
 
 3. **Fallback — detect partial evening review:** If no "Planned" page exists for today, query for the most recent Daily Brief page with Status = "Reviewed" and Date within the last 48 hours. If found, set an internal flag `evening_review_detected = true`. This flag signals Steps C0.5, C2, and C4.5 that an evening review ran even though the Pre-planned Path wasn't triggered. The Cold Start Path will use this flag to pull evening review context, skip/shorten the brain dump, and present material changes before executing.
 
