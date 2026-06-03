@@ -22,7 +22,7 @@ Query the Daily Briefs database for a page with Date = today (search by Date pro
 
 - **If found with status "Reviewed":** An evening review was already done tonight. Ask: "I see an evening review was already done tonight. Update it or start fresh?" If "update," continue with the existing page. If "start fresh," proceed as normal but overwrite the evening review sections.
 - **If found with any other status:** Use that page ID. It should have status `Complete` (morning sweep finished) or possibly `Draft`/`Active` (morning sweep started but didn't finish).
-- **If not found:** Create a new page titled "YYYY-MM-DD" (today's date) with Date = today and Status = "Draft". This handles the case where no morning sweep ran today.
+- **If not found:** Create a new page titled "YYYY-MM-DD - Daily" (today's date) with Date = today and Status = "Draft". This handles the case where no morning sweep ran today.
 
 The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
 
@@ -192,7 +192,7 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 **If `## Notion: Daily Briefs` is enabled in me.md:**
 
 - Search Daily Briefs DB for an existing page with Date = next workday. If found, update it instead of creating a duplicate.
-- If not found, create a new page titled "YYYY-MM-DD" (next workday's date)
+- If not found, create a new page titled "YYYY-MM-DD - Daily" (next workday's date)
 - Write the plan from Step 5 to the "Plan" section (see page body structure in `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`)
 - Set page status to "Planned"
 - Set `Planned Items` property to total RED + YELLOW + GREEN count

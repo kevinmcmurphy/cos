@@ -4,7 +4,7 @@
 
 | Property        | Type    | Values / Notes                                              |
 |-----------------|---------|-------------------------------------------------------------|
-| Name            | title   | "YYYY-MM-DD" (date of the day this brief covers)           |
+| Name            | title   | "YYYY-MM-DD - Daily" (date of the day this brief covers)   |
 | Date            | date    | Brief date (ISO 8601)                                       |
 | Status          | select  | Planned, Draft, Active, Complete, Reviewed                  |
 | Red Count       | number  | Count of RED items                                          |
@@ -126,7 +126,7 @@ The Tasks DB is configured via `## Notion: Tasks` in me.md. The following proper
 
 Use the Notion MCP `notion-create-pages` tool:
 1. Set parent to the Daily Briefs database ID from me.md
-2. Set the Name (title) property to "YYYY-MM-DD" format
+2. Set the Name (title) property to "YYYY-MM-DD - Daily" format (e.g. "2026-06-03 - Daily")
 3. Set Date to the appropriate date
 4. Set Status to the appropriate starting status (Planned, Draft)
 5. Set Red Count, Yellow Count, and Planned Items from classification results
@@ -136,4 +136,4 @@ Use `notion-update-page` to transition statuses and update properties as the swe
 
 ## Finding Existing Pages
 
-**Always search by Date property**, not by title. This supports both old-format ("Morning Sweep — YYYY-MM-DD") and new-format ("YYYY-MM-DD") pages. Query the Daily Briefs database filtering by Date = target date.
+**Always search by Date property**, not by title. This finds pages regardless of title format — legacy ("Morning Sweep — YYYY-MM-DD", "YYYY-MM-DD") and current ("YYYY-MM-DD - Daily"). Query the Daily Briefs database filtering by Date = target date. One page per day, shared by the morning sweep and evening review.
