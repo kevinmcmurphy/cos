@@ -64,6 +64,8 @@ If Tasks is not enabled: no task creation. Items still surface in the Email Tria
 
 ## Step 2: Write to Daily Brief Page
 
+**This skill never runs the Daily Brief Guard procedure and never calls `notion-create-pages` for the Daily Brief page.** It only ever consumes the `daily_brief_page_id` it was handed in its input shape (originating from morning-sweep, evening-review, or email-classify's Step 2). If that id is null, skip this entire step — do not attempt to find or create a page yourself.
+
 If `daily_brief_page_id` is not null and Daily Briefs is enabled:
 
 **Supersede behavior.** Find the existing `Email Triage` section on the Daily Brief page. If found, replace its entire body content with the new output (update the timestamp in the heading). If not found, create the section. The section heading is `Email Triage — HH:MM ET`. Do not append a new section on each run — replace the existing one.

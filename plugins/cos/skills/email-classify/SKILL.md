@@ -39,13 +39,11 @@ Cache the resolved `{displayName -> labelId}` map for use in Steps 4 and 5.
 
 ## Step 2: Find or Create Today's Daily Brief Page
 
-If `daily_brief_page_id` was passed in by the calling skill (e.g., `morning-sweep` or `evening-review`), use it. Do not search or create.
+If `daily_brief_page_id` was passed in by the calling skill (e.g., `morning-sweep` or `evening-review`), use it. **Do not search or create — never free-create a page when a parent skill already supplied an id.**
 
-Otherwise, if `## Notion: Daily Briefs` is enabled in me.md:
+Otherwise, if `## Notion: Daily Briefs` is enabled in me.md (this is the standalone path — e.g. `/cos:email-triage` invoked directly, with no parent skill):
 
-1. Search the Daily Briefs DB for a page with Date = today.
-2. If found, use that page ID.
-3. If not found, create a new page titled "YYYY-MM-DD" with Date = today, Status = "Draft".
+**Run the Daily Brief Guard procedure** from `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md` in full. Do not query or decide on your own, and do not use any title format other than the guard's canonical `"YYYY-MM-DD - Daily"` (a prior version of this step created a fallback page titled bare `"YYYY-MM-DD"` — that was a bug; it produced a page no other skill's find-step could ever match, guaranteeing a duplicate. Never do that again). Print the guard's `log_line`. If the guard returns `stop_ambiguous`, do not create anything — proceed with `daily_brief_page_id = null` for this run and note the candidate ids in your output so a human can reconcile.
 
 Save the page ID for the handoff shape. If Daily Briefs is not enabled, `daily_brief_page_id` = null.
 
