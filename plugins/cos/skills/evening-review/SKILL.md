@@ -18,11 +18,12 @@ Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logi
 
 **If `## Notion: Daily Briefs` is enabled in me.md:**
 
-Query the Daily Briefs database for a page with Date = today (search by Date property, not title — see `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`).
+**Run the Daily Brief Guard procedure** from `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md` in full. Do not query or decide on your own. Print the guard's `log_line` before proceeding, exactly as that procedure requires.
 
-- **If found with status "Reviewed":** An evening review was already done tonight. Ask: "I see an evening review was already done tonight. Update it or start fresh?" If "update," continue with the existing page. If "start fresh," proceed as normal but overwrite the evening review sections.
-- **If found with any other status:** Use that page ID. It should have status `Complete` (morning sweep finished) or possibly `Draft`/`Active` (morning sweep started but didn't finish).
-- **If not found:** Create a new page titled "YYYY-MM-DD - Daily" (today's date) with Date = today and Status = "Draft". This handles the case where no morning sweep ran today.
+- **If the guard returned `stop_ambiguous`:** do not create anything, do not guess. Report the candidate ids and skip all Daily Brief page writes for this run — do not attempt Notion write-back until a human resolves the duplicate.
+- **If the guard returned `reuse` or `create`, fetch/note the resulting page's Status:**
+  - **Status "Reviewed":** An evening review was already done tonight. Ask: "I see an evening review was already done tonight. Update it or start fresh?" If "update," continue with the existing page. If "start fresh," proceed as normal but overwrite the evening review sections.
+  - **Any other status** (including a freshly created page, which starts at "Draft"): Use that page ID. An existing page found this way should typically have status `Complete` (morning sweep finished) or possibly `Draft`/`Active` (morning sweep started but didn't finish); a newly created page means no morning sweep ran today.
 
 The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
 
@@ -191,8 +192,7 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 
 **If `## Notion: Daily Briefs` is enabled in me.md:**
 
-- Search Daily Briefs DB for an existing page with Date = next workday. If found, update it instead of creating a duplicate.
-- If not found, create a new page titled "YYYY-MM-DD - Daily" (next workday's date)
+- **Run the Daily Brief Guard procedure** from `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md`, using the **next workday's date** (not today's) as the target date throughout. This is the same deterministic procedure Step 0 uses — it is not "today"-specific, it works for any target date. Print the guard's `log_line`. If it returns `stop_ambiguous`, do not create anything — report the candidate ids and skip this page's write-back for this run.
 - Write the plan from Step 5 to the "Plan" section (see page body structure in `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md`)
 - Set page status to "Planned"
 - Set `Planned Items` property to total RED + YELLOW + GREEN count

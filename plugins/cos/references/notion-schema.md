@@ -136,4 +136,4 @@ Use `notion-update-page` to transition statuses and update properties as the swe
 
 ## Finding Existing Pages
 
-**Always search by Date property**, not by title. This finds pages regardless of title format — legacy ("Morning Sweep — YYYY-MM-DD", "YYYY-MM-DD") and current ("YYYY-MM-DD - Daily"). Query the Daily Briefs database filtering by Date = target date. One page per day, shared by the morning sweep and evening review.
+**Never search or create ad hoc.** Use the Daily Brief Guard procedure at `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md` for every find-or-create of today's page — it is the single deterministic implementation shared by morning-sweep, evening-review, and email-classify. The guard matches on the **Name (title) property exactly equal to `"YYYY-MM-DD - Daily"`** — not on Date alone, because the database can contain multiple same-date rows (duplicates awaiting cleanup, or unrelated stray pages). One page per day, shared by the morning sweep and evening review; do not implement your own find logic outside the guard.

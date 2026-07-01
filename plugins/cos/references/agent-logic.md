@@ -12,6 +12,7 @@ Load these values from me.md:
 - `domains` from `## Email Monitoring`
 - Notion module flags (`enabled: true/false`) from `## Notion: Projects`, `## Notion: Pipeline`, `## Notion: Clients`, `## Notion: Tasks`
 - `daily_briefs_database_id` from `## Notion: Daily Briefs`
+- `daily_briefs_view_id` from `## Notion: Daily Briefs` — the pinned, dedicated view used by the Daily Brief Guard procedure (`${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md`) for deterministic find-or-create. Required whenever Daily Briefs is enabled.
 - All rules from `## My Rules` and `## Custom Rules`
 
 ## Timezone Rule — Non-Negotiable
