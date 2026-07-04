@@ -18,9 +18,9 @@ Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logi
 
 If `## Notion: Daily Briefs` is enabled in me.md:
 
-1. **Run the Daily Brief Guard procedure** from `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md` in full. Do not query or decide on your own — that procedure is the ONLY way this skill finds or creates today's page. It returns one of `reuse` / `create` / `stop_ambiguous` plus a page id (for `reuse`/`create`) or candidate ids (for `stop_ambiguous`). Print the guard's `log_line` before proceeding, exactly as that procedure requires.
+1. **Run the Daily Brief Guard procedure** from `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md` in full. Do not query or decide on your own — that procedure is the ONLY way this skill finds or creates today's page. It returns `reuse` or `create` (only these two — no ambiguous/stop outcome) plus a `page_id`. Print the guard's `log_line` before proceeding, exactly as that procedure requires.
 
-2. **If the guard returned `stop_ambiguous`:** do not create anything, do not guess. Report the candidate ids from the guard and skip all Daily Brief page writes for this run — you may still gather data and present the brief in conversation, but do not attempt Notion write-back until a human resolves the duplicate. Otherwise, continue below.
+2. **If the guard's `action` was `"reuse"` and `match_count >= 2`** (a genuine duplicate — 2+ rows already titled exactly `"YYYY-MM-DD - Daily"` for today): the guard has already picked `page_id` for you (first match by positional order). Proceed with that `page_id` as normal — do not skip Notion write-back. Report the returned `duplicate_ids` in your output so a human can reconcile the extra row(s) later; do not try to merge/delete them yourself. Otherwise, continue below.
 
 3. **Branch based on the resulting page (fetch its Status property):**
    - **Page has Status = "Planned"** → This day was pre-planned by an evening review. Follow the **Pre-planned Path** below.
