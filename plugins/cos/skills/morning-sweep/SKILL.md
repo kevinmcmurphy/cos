@@ -77,6 +77,10 @@ Start from last night's plan as baseline. Layer in fresh data:
 
 Reclassify items using the framework in `${CLAUDE_PLUGIN_ROOT}/references/classification.md` if the new data warrants it. Note what changed.
 
+### Step P3.5: Gather Unstall Three
+
+Run the Gather step from `${CLAUDE_PLUGIN_ROOT}/references/unstall-three.md` in full. This is a bash/CLI query, not something to reason about — follow that doc's exact command and its skip/empty handling.
+
 ### Step P4: Present Brief
 
 Update the page status from "Planned" to "Active".
@@ -119,12 +123,19 @@ PIPELINE:
 
 ---
 
+UNSTALL THREE (your 10 minutes)
+- [title] | [project]
+- [title] | [project]
+- [title] | [project]
+
+---
+
 CAPACITY CHECK: Based on your calendar, you have roughly [X hours] of
 unscheduled time today. The RED + YELLOW items above would take
 approximately [Y hours]. [Assessment]
 ```
 
-Only include PIPELINE if the Pipeline module is enabled. Only include project-related LOOSE ENDS if the Projects module is enabled.
+Only include PIPELINE if the Pipeline module is enabled. Only include project-related LOOSE ENDS if the Projects module is enabled. Only include UNSTALL THREE if Step P3.5/C3.5's gather returned 1+ items — omit the section (including its heading and both `---` separators around it) entirely when empty. See `${CLAUDE_PLUGIN_ROOT}/references/unstall-three.md` for the gather step, framing rule, and local-artifact write.
 
 **Immediately write the brief to the Daily Brief page.** Update Red Count and Yellow Count properties.
 
@@ -239,6 +250,10 @@ Take ALL inputs — calendar, email, projects, pipeline, carryover, and the user
 
 If `evening_review_context` was populated in Step C0.5, use the evening review's classification as baseline context: items the user flagged as important last night should be weighted higher today.
 
+### Step C3.5: Gather Unstall Three
+
+Run the Gather step from `${CLAUDE_PLUGIN_ROOT}/references/unstall-three.md` in full. This is a bash/CLI query, not something to reason about — follow that doc's exact command and its skip/empty handling.
+
 ### Step C4: Present the Morning Brief
 
 Output in the standard brief format (same as Step P4 above, but without the "updated from evening plan" header and changes-since-last-night line).
@@ -325,6 +340,10 @@ created_at: YYYY-MM-DDTHH:MM:SS-HH:MM
 #### GRAY — Not today
 - ITEM — REASON
 
+### Unstall Three
+
+- [ID] TITLE — PROJECT
+
 ### Drafts Created
 
 - **Gmail (kevin@klmc.co):** SUBJECT — draft id `DRAFT-ID`
@@ -346,6 +365,7 @@ Field notes:
 - `Notion brief` URL: derive from the Notion page ID — format as `https://www.notion.so/{id-without-dashes}`. If unavailable, write `_unavailable_`.
 - `Telegram message id`: the `message_id` returned by `mcp__plugin_telegram_telegram__reply`. If unavailable, write `_unavailable_`.
 - `Classified Items`: mirror the RED/YELLOW/GREEN/GRAY content sent to Notion. One bullet per item. For empty subsections, write `_none_`.
+- `Unstall Three`: one bullet per item surfaced by Step P3.5/C3.5's gather, each prefixed with its mane-db task `[ID]` (e.g. `- [42] Cancel unused subscription — Personal Admin`). This is the field evening-review's close-out reads back — the id must be present, not just the title. If the gather returned nothing this run, write `_none_`.
 - `Drafts Created`: list each Gmail draft with its draft id; list each Adapture draft by subject. If none, write `_none_` under the heading.
 - `Telegram Summary Sent`: the verbatim text string passed to the `text` parameter of the reply tool. If no Telegram message was sent, write `_none_`.
 - `Actions Taken`: one bullet per executed action with outcome. If none, write `_none_`.
