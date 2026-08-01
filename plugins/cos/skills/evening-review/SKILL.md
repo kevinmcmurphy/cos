@@ -113,6 +113,10 @@ Follow Task Creation patterns from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic
 
 Run the email triage skill at `${CLAUDE_PLUGIN_ROOT}/skills/email-triage/SKILL.md`, passing today's Daily Brief page ID and skipping email-classify's Step 2.
 
+## Step 4.6: Unstall Three Close-Out
+
+Run the Close-Out procedure from `${CLAUDE_PLUGIN_ROOT}/references/unstall-three.md` in full: read today's local daily-sweep artifact for the items surfaced this morning, detect/ask done vs. not, mark done items complete in mane-db, and leave not-done items alone (they carry implicitly — no streak or aging machinery in v1). Log the outcome per that doc.
+
 ## Step 5: Plan Next Workday
 
 ### Determine the Target Day
@@ -274,4 +278,4 @@ Field notes:
 - `Pattern note`: the one-sentence result from Step 3.
 - `Tomorrow's Plan`: condensed summary — RED count, YELLOW count, GREEN count, GRAY count, and top 2–3 RED items by name.
 - `Telegram Summary Sent`: verbatim text passed to `text` parameter of the reply tool. If none, write `_none_`.
-- `Actions Taken`: one bullet per system update or task creation from Steps 4–6. If none, write `_none_`.
+- `Actions Taken`: one bullet per system update or task creation from Steps 4–6. Include Step 4.6's Unstall Three close-out outcome as one of these bullets (e.g. "Unstall Three close-out: 2 done, 1 carried"), or `_none_` if Step 4.6 was skipped (no Unstall Three subsection in this morning's artifact).
