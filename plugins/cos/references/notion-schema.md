@@ -134,6 +134,17 @@ Use the Notion MCP `notion-create-pages` tool:
 
 Use `notion-update-page` to transition statuses and update properties as the sweep progresses.
 
+### Shared-page preservation rule
+
+The Daily Brief page is shared by several routines. Each writer may insert or replace only the section it owns:
+
+- morning-sweep owns `Morning Brief`;
+- email-notion-sink owns `Email Triage`;
+- evening-review owns `Plan` and `Evening Review`;
+- external routines may own additional sections such as `Communications`.
+
+Before changing body content, fetch the current page and preserve every section the current routine does not own. Never use a whole-page body replacement to write one section. On a reused page that has no `Morning Brief`, insert that section without removing or rewriting existing sections. If the available Notion tool cannot make that section-scoped update safely, stop before the body write and report the blocker.
+
 ## Finding Existing Pages
 
 **Never search or create ad hoc.** Use the Daily Brief Guard procedure at `${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md` for every find-or-create of today's page — it is the single deterministic implementation shared by morning-sweep, evening-review, and email-classify. The guard matches on the **Name (title) property exactly equal to `"YYYY-MM-DD - Daily"`** — not on Date alone, because the database can contain multiple same-date rows (duplicates awaiting cleanup, or unrelated stray pages). One page per day, shared by the morning sweep and evening review; do not implement your own find logic outside the guard.

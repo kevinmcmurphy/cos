@@ -15,6 +15,8 @@ Load these values from me.md:
 - `daily_briefs_view_id` from `## Notion: Daily Briefs` — the pinned, dedicated view used by the Daily Brief Guard procedure (`${CLAUDE_PLUGIN_ROOT}/references/daily-brief-guard.md`) for deterministic find-or-create. Required whenever Daily Briefs is enabled.
 - All rules from `## My Rules` and `## Custom Rules`
 
+If Daily Briefs is enabled but `daily_briefs_database_id`/`database_id` or `daily_briefs_view_id` is missing, stop before any Notion query or page creation and run `/cos:setup` to repair config. Never fall back to an arbitrary database view.
+
 ## Timezone Rule — Non-Negotiable
 
 All times presented to the user MUST be in the timezone from me.md. This applies to:
