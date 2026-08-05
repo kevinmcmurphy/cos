@@ -143,8 +143,9 @@ If creating new:
 - Create the database with properties: Name (title), Date (date), Status (select: Planned, Draft, Active, Complete, Reviewed), Red Count (number), Yellow Count (number), Planned Items (number), Completed Items (number)
 - Note: Completion Rate formula property may need to be added manually by the user
 - Save the database ID
+- Create or select a dedicated, unfiltered database view sorted by Date descending. Save its view ID as `daily_briefs_view_id`; the deterministic Daily Brief Guard requires it.
 
-If connecting existing: confirm the database ID.
+If connecting existing: confirm the database ID, then select a dedicated, unfiltered view sorted by Date descending and save its view ID as `daily_briefs_view_id`.
 
 If skip: sweep outputs will only appear in conversation.
 
@@ -210,6 +211,7 @@ default_personal_project: [name]
 ## Notion: Daily Briefs
 enabled: [true/false]
 database_id: [id]
+daily_briefs_view_id: [id of dedicated unfiltered Date-descending view]
 
 ## My Rules
 - [user's personal rules]

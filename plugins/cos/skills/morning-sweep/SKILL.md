@@ -14,6 +14,8 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
 
+Run the **Start signal and carry-forward** portion of `${CLAUDE_PLUGIN_ROOT}/references/morning-board.md`. This is deterministic shell work and does not add an LLM call.
+
 ## Step 0: Find or Create Daily Brief Page — Detect Path
 
 If `## Notion: Daily Briefs` is enabled in me.md:
@@ -35,6 +37,8 @@ See `${CLAUDE_PLUGIN_ROOT}/references/notion-schema.md` for page structure and w
 The Notion Write-Back Rule from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` applies to all subsequent steps.
 
 If the Daily Briefs module is not enabled, skip all page management, write-backs, and page status updates. Outputs will only appear in the conversation. Follow the Cold Start Path but skip any steps that reference the Daily Brief page.
+
+In that disabled-module case, run the Board procedure's **Completion and priorities** step immediately after presenting the brief successfully in the conversation; do not leave the start marker in `In Progress` merely because no Notion write was configured.
 
 ---
 
@@ -137,7 +141,9 @@ approximately [Y hours]. [Assessment]
 
 Only include PIPELINE if the Pipeline module is enabled. Only include project-related LOOSE ENDS if the Projects module is enabled. Only include UNSTALL THREE if Step P3.5/C3.5's gather returned 1+ items — omit the section (including its heading and both `---` separators around it) entirely when empty. See `${CLAUDE_PLUGIN_ROOT}/references/unstall-three.md` for the gather step, framing rule, and local-artifact write.
 
-**Immediately write the brief to the Daily Brief page.** Update Red Count and Yellow Count properties.
+**Immediately write the brief to the Daily Brief page.** Update only the Morning Brief section and the Red Count and Yellow Count properties. Preserve every other existing page section, including Communications, Plan, Email Triage, Drafts, Outputs, and Evening Review; never replace the whole page body.
+
+After the Notion write succeeds, run the **Completion and priorities** portion of `${CLAUDE_PLUGIN_ROOT}/references/morning-board.md`, using the context already gathered for this brief.
 
 **Also write a local daily-sweep artifact** (after the Notion write is complete). See `${CLAUDE_PLUGIN_ROOT}/references/daily-sweep-artifact.md` for the shared procedure. Write the `## Morning` section using the template below.
 
@@ -258,7 +264,9 @@ Run the Gather step from `${CLAUDE_PLUGIN_ROOT}/references/unstall-three.md` in 
 
 Output in the standard brief format (same as Step P4 above, but without the "updated from evening plan" header and changes-since-last-night line).
 
-If Daily Briefs is enabled: set page status to "Active", write the brief to the page, set Red Count, Yellow Count, and Planned Items properties.
+If Daily Briefs is enabled: set page status to "Active", update only the Morning Brief section, and set Red Count, Yellow Count, and Planned Items properties. Preserve every other existing page section, including Communications, Plan, Email Triage, Drafts, Outputs, and Evening Review; never replace the whole page body.
+
+After the Notion write succeeds, run the **Completion and priorities** portion of `${CLAUDE_PLUGIN_ROOT}/references/morning-board.md`, using the context already gathered for this brief.
 
 **Also write a local daily-sweep artifact** (after the Notion write is complete). See `${CLAUDE_PLUGIN_ROOT}/references/daily-sweep-artifact.md` for the shared procedure. Write the `## Morning` section using the template below.
 
