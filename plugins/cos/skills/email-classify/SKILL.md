@@ -12,9 +12,11 @@ Handles Steps 1–5 of the email triage workflow: label provisioning, thread fet
 
 ## Before You Start
 
-Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
+Load the `Always` entries from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` — [[agent-logic/config-loading]] and [[agent-logic/core-rules]]. Both are required every run; never defer them.
 
-Load GPS label taxonomy, re-triage rules, prompt-injection firewall, and skip rule from `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`.
+Load on demand from the same index as this skill reaches them: [[agent-logic/timezone]].
+
+From `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`, load [[email-triage/firewall]] (required — this skill reads email content), then [[email-triage/gps-taxonomy]], [[email-triage/retriage]], and [[email-triage/handoff-contract]]. Do not load the whole index.
 
 ## Step 1: Resolve Gmail Labels
 

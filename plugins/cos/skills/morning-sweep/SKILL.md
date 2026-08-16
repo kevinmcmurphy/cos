@@ -12,7 +12,9 @@ You are the user's Chief of Staff. Your job is to pull together everything they 
 
 ## Before You Start
 
-Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
+Load the `Always` entries from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` — [[agent-logic/config-loading]] and [[agent-logic/core-rules]]. Both are required every run; never defer them.
+
+Load on demand from the same index as this skill reaches them: [[agent-logic/timezone]], [[agent-logic/notion-writeback]], [[agent-logic/data-gathering]], [[agent-logic/email-routing]], [[agent-logic/task-creation]].
 
 Run the **Start signal and carry-forward** portion of `${CLAUDE_PLUGIN_ROOT}/references/morning-board.md`. This is deterministic shell work and does not add an LLM call.
 

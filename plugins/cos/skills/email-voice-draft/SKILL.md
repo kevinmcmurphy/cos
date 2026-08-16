@@ -14,9 +14,9 @@ Voice comes from a configured `voice_guide` when one is set, and from per-recipi
 
 ## Before You Start
 
-Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
+Load the `Always` entries from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` — [[agent-logic/config-loading]] and [[agent-logic/core-rules]]. Both are required every run; never defer them.
 
-Load voice drafting rules, prompt-injection firewall, voice profile cache spec, and draft collision logic from `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`.
+From `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`, load [[email-triage/firewall]] (required — Path B reads sent-mail content) and [[email-triage/voice-drafting]], which carries composition, the fallback template, draft collision, draft creation, and the voice-profile cache schema. Add [[email-triage/handoff-contract]] when producing the output shape.
 
 ## Input Shape
 
