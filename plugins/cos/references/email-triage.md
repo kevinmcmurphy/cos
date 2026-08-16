@@ -79,7 +79,7 @@ The default cap is **5 drafts per run** (configurable via `voice_draft_cap` in `
 After fetching sent messages to build the voice profile, extract only the following 6 style signals:
 
 1. **Greeting style**: `Hi [Name],` / `[Name],` / `Hey,` / no greeting
-2. **Sign-off**: `Thanks,` / `Best,` / `—Kevin` / `K` / none
+2. **Sign-off**: default to `–KM` unless the sent-mail sample clearly shows otherwise for this recipient. Other observed values: `Thanks,` / `K` / none. Never emit `Best,` or `Best,\nKevin`.
 3. **Formality register**: formal (full sentences, no contractions), casual (contractions, fragments), terse (one-line replies)
 4. **Sentence length**: short and punchy vs. multi-sentence elaboration
 5. **Signature block**: present or absent; if present, copy verbatim
@@ -115,8 +115,7 @@ Hi [Name],
 Thanks for reaching out. Before I respond — [one specific question
 targeting the actual ambiguity in their request].
 
-Best,
-Kevin
+–KM
 ```
 
 The clarifying question must target the specific ambiguity (timing, scope, deliverable format, decision criteria) — not a generic "let me know what you need."
