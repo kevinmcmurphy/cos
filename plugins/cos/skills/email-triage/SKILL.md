@@ -15,9 +15,9 @@ Safe to run multiple times per day — re-triage logic in `email-classify` skips
 
 ## Before You Start
 
-Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
+Load the `Always` entries from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` — [[agent-logic/config-loading]] and [[agent-logic/core-rules]]. Both are required every run; never defer them.
 
-Read `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md` for the full reference: GPS taxonomy, skill handoff contract, output format, and all decision rules.
+From `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`, load [[email-triage/handoff-contract]] and [[email-triage/invocation]]. As the orchestrator this skill passes shapes between sub-skills; it does not classify, draft, or render, so it needs neither the taxonomy nor the voice rules nor the output format. Each sub-skill loads its own.
 
 ## Step 1: Classify
 

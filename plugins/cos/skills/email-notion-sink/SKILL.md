@@ -12,9 +12,11 @@ Handles Steps 7–8 of the email triage workflow: Notion task creation and Daily
 
 ## Before You Start
 
-Load config and apply all rules per `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md`.
+Load the `Always` entries from `${CLAUDE_PLUGIN_ROOT}/references/agent-logic.md` — [[agent-logic/config-loading]] and [[agent-logic/core-rules]]. Both are required every run; never defer them.
 
-Load Notion task creation rules and output format from `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`.
+Load on demand from the same index as this skill reaches them: [[agent-logic/notion-writeback]], [[agent-logic/task-creation]], [[agent-logic/email-routing]].
+
+From `${CLAUDE_PLUGIN_ROOT}/references/email-triage.md`, load [[email-triage/notion-tasks]], [[email-triage/output-format]], and [[email-triage/handoff-contract]].
 
 ## Input Shape
 

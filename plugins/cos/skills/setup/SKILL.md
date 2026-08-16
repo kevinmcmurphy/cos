@@ -182,6 +182,14 @@ If they provide a path, record it as `voice_guide` and confirm the file is reada
 
 ## Step 8: Write Config
 
+### 8a: Choose a layout
+
+> "Last choice: I can write your config as one file, or split it into a small cluster of linked files that I load only when I need them. One file is simpler to eyeball. The cluster keeps unrelated config out of unrelated tasks — your voice settings don't get read during a calendar sweep. Either works, and you can switch later."
+
+Default to **one file** if the user has no preference. The cluster pays off as config grows; it is not worth the extra files for a short config.
+
+### 8b: Monolithic layout (default)
+
 Write the config to `${CLAUDE_PLUGIN_DATA}/me.md` in this format:
 
 ```
@@ -242,4 +250,34 @@ voice_profile_store: none
 - [user's custom rules]
 ```
 
-Tell the user: "Config saved. You can edit it anytime — it's human-readable markdown. This file lives in the plugin's data directory and survives plugin updates."
+### 8c: Cluster layout
+
+If the user chose the cluster, write `${CLAUDE_PLUGIN_DATA}/me.md` as an index:
+
+```
+# me.md
+
+Config index. Sections load on demand — see references/config-resolution.md.
+
+## Always
+- [[identity]] — timezone and role
+- [[rules]] — my rules and custom rules
+
+## On demand
+- [[email-accounts]] — connected and unconnected send routing
+- [[email-monitoring]] — monitored domains
+- [[notion]] — Projects, Pipeline, Clients, Tasks, Daily Briefs
+- [[voice]] — sign-off, voice guide, draft cap, profile store
+```
+
+Then write each section, with its original `## Heading` intact, to `${CLAUDE_PLUGIN_DATA}/me/<name>.md` — `identity.md`, `rules.md`, `email-accounts.md`, `email-monitoring.md`, `notion.md`, `voice.md`.
+
+Keep the headings unchanged. Every skill refers to config by section name (`## Notion: Tasks`, `## Voice`); renaming them during a split breaks those references.
+
+Group all five Notion modules into one `notion.md` — they are enabled and read together, so splitting them adds reads without reducing what is loaded.
+
+### 8d: Confirm
+
+Tell the user: "Config saved. You can edit it anytime — it's human-readable markdown. This lives in the plugin's data directory and survives plugin updates."
+
+If a cluster was written, add: "Your config is an index at `me.md` with the sections in `me/`. Add a `[[link]]` to the index when you add a file — an unlinked file in that directory is never read."
