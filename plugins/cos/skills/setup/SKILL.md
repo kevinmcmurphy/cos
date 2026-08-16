@@ -149,9 +149,25 @@ If connecting existing: confirm the database ID, then select a dedicated, unfilt
 
 If skip: sweep outputs will only appear in conversation.
 
-## Step 6: Rules
+## Step 6: Voice
 
-### 6a: Personal Rules
+Only asked if email triage will be used. All fields are optional — skip the section entirely if the user isn't sure yet.
+
+### 6a: Sign-off
+
+> "When you reply to email, how do you sign off? Paste it exactly as you'd want it to appear — some people use `Thanks,` and their name, some use initials, some use nothing at all."
+
+Record verbatim as `sign_off`. Do not normalize capitalization, punctuation, or spacing. If the user says they don't use one, leave it unset — drafts will omit the sign-off rather than invent one.
+
+### 6b: Voice Guide
+
+> "Do you have a written guide for how you want your email replies to sound — length, structure, words you avoid? If you point me at one, I'll use it for every draft instead of guessing your style from your sent mail. That's both cheaper and more accurate. If you don't have one, I'll infer your voice from past emails instead."
+
+If they provide a path, record it as `voice_guide` and confirm the file is readable. If they don't have one, leave it unset and mention they can add it later — this is the single biggest lever on triage cost, since inference re-reads sent mail for every recipient on every run.
+
+## Step 7: Rules
+
+### 7a: Personal Rules
 
 > "I have some core safety rules built in (like never sending email without your review). But you can add your own rules too. Common ones people add:"
 > - NEVER make pricing or scope decisions for [your business]
@@ -160,11 +176,11 @@ If skip: sweep outputs will only appear in conversation.
 >
 > "What rules would you like to add? You can always edit these later."
 
-### 6b: Custom Rules
+### 7b: Custom Rules
 
 > "Any other standing instructions? Things like 'ignore alerts from system X' or 'always check Y before Z'?"
 
-## Step 7: Write Config
+## Step 8: Write Config
 
 Write the config to `${CLAUDE_PLUGIN_DATA}/me.md` in this format:
 
@@ -212,6 +228,12 @@ default_personal_project: [name]
 enabled: [true/false]
 database_id: [id]
 daily_briefs_view_id: [id of dedicated unfiltered Date-descending view]
+
+## Voice
+sign_off: [literal sign-off, verbatim — omit the line if the user doesn't use one]
+voice_guide: [path to a markdown voice guide — omit to infer voice from sent mail]
+voice_draft_cap: 5
+voice_profile_store: none
 
 ## My Rules
 - [user's personal rules]
