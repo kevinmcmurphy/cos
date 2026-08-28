@@ -241,7 +241,11 @@ MORNING_BOARD="$SCRIPT_DIR/../plugins/cos/references/morning-board.md"
 assert_file_contains "$MORNING_BOARD" "CLOUD BOARD PERSISTENCE MODE" "cloud run selects durable Board publication"
 assert_count 0 "cos-board-cloud-persist" "$MORNING_BOARD" "cloud run no longer names the hand-rolled Board publisher"
 assert_count 2 "/bin/memory-publish" "$MORNING_BOARD" "cloud run invokes the shared publisher once at each publication point"
-assert_count 2 'KLMC_REPO="<klmc-agent-home-root>"' "$MORNING_BOARD" "cloud producer is pinned to the checked-out klmc-agent-home root"
+assert_count 2 'KLMC_ROOT="$(git rev-parse --show-toplevel)"' "$MORNING_BOARD" "each cloud checkpoint resolves the checked-out klmc-agent-home root once"
+assert_count 2 'TODAY="$(TZ=America/New_York date +%Y-%m-%d)"' "$MORNING_BOARD" "each cloud checkpoint resolves the ET date once"
+assert_count 2 'config --local --get klmc.boardRole' "$MORNING_BOARD" "each cloud checkpoint verifies the canonical Board role"
+assert_count 2 'KLMC_REPO="$KLMC_ROOT"' "$MORNING_BOARD" "cloud producer is pinned to the resolved klmc-agent-home root"
+assert_count 2 '--branch "publish/cos-board-$TODAY"' "$MORNING_BOARD" "both cloud checkpoints update one deterministic publish branch"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
