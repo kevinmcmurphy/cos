@@ -237,7 +237,11 @@ assert_file_contains "$SCRIPT_DIR/../plugins/cos/skills/morning-sweep/SKILL.md" 
 assert_file_contains "$SCRIPT_DIR/../plugins/cos/skills/morning-sweep/SKILL.md" "Preserve every other existing page section" "morning skill preserves non-owned Notion sections"
 assert_file_contains "$SCRIPT_DIR/../plugins/cos/skills/setup/SKILL.md" "daily_briefs_view_id:" "setup writes the pinned Daily Brief view ID"
 assert_file_contains "$SCRIPT_DIR/../plugins/cos/skills/morning-sweep/SKILL.md" "disabled-module case" "Daily Briefs-disabled run still completes Board signal"
-assert_file_contains "$SCRIPT_DIR/../plugins/cos/references/morning-board.md" "CLOUD BOARD PERSISTENCE MODE" "cloud run routes producer through durable PR wrapper"
+MORNING_BOARD="$SCRIPT_DIR/../plugins/cos/references/morning-board.md"
+assert_file_contains "$MORNING_BOARD" "CLOUD BOARD PERSISTENCE MODE" "cloud run selects durable Board publication"
+assert_count 0 "cos-board-cloud-persist" "$MORNING_BOARD" "cloud run no longer names the hand-rolled Board publisher"
+assert_count 2 "/bin/memory-publish" "$MORNING_BOARD" "cloud run invokes the shared publisher once at each publication point"
+assert_count 2 'KLMC_REPO="<klmc-agent-home-root>"' "$MORNING_BOARD" "cloud producer is pinned to the checked-out klmc-agent-home root"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
