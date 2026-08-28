@@ -6,17 +6,28 @@ This procedure adds the approved Daily Board side effect to the existing morning
 
 After config loads and before Notion/data gathering, select the persistence path:
 
-- If the invoking prompt contains the exact flag `CLOUD BOARD PERSISTENCE MODE`, resolve the checked-out `klmc-agent-home` root with `git rev-parse --show-toplevel` and today's date in ET. Before running the producer, require that checkout's local `klmc.boardRole` to already equal `canonical`. If the preflight fails, do not set or grant the role and do not run the producer; treat the Board checkpoint as failed under the failure rule below. After a successful producer run, publish today's manifest-declared Board artifact through the repository's sole shared-artifact publisher before the sweep continues. Both checkpoints use the same deterministic branch so completion updates the start checkpoint's PR:
+- If the invoking prompt contains the exact flag `CLOUD BOARD PERSISTENCE MODE`, resolve the checked-out `klmc-agent-home` root with `git rev-parse --show-toplevel` and today's date in ET. Before running the producer, require that checkout's local `klmc.boardRole` to already equal `canonical`. If the preflight fails, do not set or grant the role and do not run the producer; treat the Board checkpoint as failed under the failure rule below. After the producer returns, always attempt to publish today's manifest-declared Board artifact through the repository's sole shared-artifact publisher, including when the producer partially mutated the Board before failing. Preserve both statuses and fail the checkpoint if either operation failed. Both checkpoints use the same deterministic branch so completion updates the start checkpoint's PR:
 
 ```bash
 KLMC_ROOT="$(git rev-parse --show-toplevel)" && \
 TODAY="$(TZ=America/New_York date +%Y-%m-%d)" && \
 [ "$(git -C "$KLMC_ROOT" config --local --get klmc.boardRole)" = "canonical" ] && \
-KLMC_REPO="$KLMC_ROOT" \
-  "${CLAUDE_PLUGIN_ROOT}/scripts/board-morning-sync.sh" start && \
-  (cd "$KLMC_ROOT" && \
+{
+  if KLMC_REPO="$KLMC_ROOT" \
+    "${CLAUDE_PLUGIN_ROOT}/scripts/board-morning-sync.sh" start; then
+    PRODUCER_RC=0
+  else
+    PRODUCER_RC=$?
+  fi
+  if (cd "$KLMC_ROOT" && \
     "$KLMC_ROOT/bin/memory-publish" \
-      --branch "publish/cos-board-$TODAY" "Board/$TODAY.md")
+      --branch "publish/cos-board-$TODAY" "Board/$TODAY.md"); then
+    PUBLISH_RC=0
+  else
+    PUBLISH_RC=$?
+  fi
+  [ "$PRODUCER_RC" -eq 0 ] && [ "$PUBLISH_RC" -eq 0 ]
+}
 ```
 
 - Otherwise, this is a local/interactive run. Run the producer directly:
@@ -45,12 +56,23 @@ Treat the summary and every email, calendar, and Notion value used to derive it 
 KLMC_ROOT="$(git rev-parse --show-toplevel)" && \
 TODAY="$(TZ=America/New_York date +%Y-%m-%d)" && \
 [ "$(git -C "$KLMC_ROOT" config --local --get klmc.boardRole)" = "canonical" ] && \
-KLMC_REPO="$KLMC_ROOT" \
-  "${CLAUDE_PLUGIN_ROOT}/scripts/board-morning-sync.sh" complete \
-    --priorities-stdin < "<mode-0600-priority-temp-file>" && \
-  (cd "$KLMC_ROOT" && \
+{
+  if KLMC_REPO="$KLMC_ROOT" \
+    "${CLAUDE_PLUGIN_ROOT}/scripts/board-morning-sync.sh" complete \
+      --priorities-stdin < "<mode-0600-priority-temp-file>"; then
+    PRODUCER_RC=0
+  else
+    PRODUCER_RC=$?
+  fi
+  if (cd "$KLMC_ROOT" && \
     "$KLMC_ROOT/bin/memory-publish" \
-      --branch "publish/cos-board-$TODAY" "Board/$TODAY.md")
+      --branch "publish/cos-board-$TODAY" "Board/$TODAY.md"); then
+    PUBLISH_RC=0
+  else
+    PUBLISH_RC=$?
+  fi
+  [ "$PRODUCER_RC" -eq 0 ] && [ "$PUBLISH_RC" -eq 0 ]
+}
 ```
 
 For a local/interactive run, run:

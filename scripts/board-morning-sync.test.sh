@@ -246,6 +246,9 @@ assert_count 2 'TODAY="$(TZ=America/New_York date +%Y-%m-%d)"' "$MORNING_BOARD" 
 assert_count 2 'config --local --get klmc.boardRole' "$MORNING_BOARD" "each cloud checkpoint verifies the canonical Board role"
 assert_count 2 'KLMC_REPO="$KLMC_ROOT"' "$MORNING_BOARD" "cloud producer is pinned to the resolved klmc-agent-home root"
 assert_count 2 '--branch "publish/cos-board-$TODAY"' "$MORNING_BOARD" "both cloud checkpoints update one deterministic publish branch"
+assert_count 2 'PRODUCER_RC=$?' "$MORNING_BOARD" "each cloud checkpoint preserves producer failure status"
+assert_count 2 'PUBLISH_RC=$?' "$MORNING_BOARD" "each cloud checkpoint attempts publication and preserves publisher failure status"
+assert_count 2 '[ "$PRODUCER_RC" -eq 0 ] && [ "$PUBLISH_RC" -eq 0 ]' "$MORNING_BOARD" "each cloud checkpoint fails if producer or publisher failed"
 
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
